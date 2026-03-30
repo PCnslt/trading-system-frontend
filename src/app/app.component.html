@@ -1,0 +1,45 @@
+<div class="container">
+  <header class="header">
+    <h1 class="title">10-Agent Trading System</h1>
+    <p class="subtitle">Professional Multi-Agent Trading Platform</p>
+  </header>
+
+  <div class="status-grid">
+    <div class="status-card" *ngFor="let agent of agents">
+      <div class="agent-header">
+        <h3>{{agent.name}}</h3>
+        <span class="status-badge" [class.active]="agent.status === 'active'">
+          {{agent.status | uppercase}}
+        </span>
+      </div>
+      <p class="agent-description">{{agent.description}}</p>
+      <div class="agent-metrics">
+        <div class="metric">
+          <span class="metric-value">{{agent.confidence}}%</span>
+          <span class="metric-label">Confidence</span>
+        </div>
+        <div class="metric">
+          <span class="metric-value">{{agent.signals}}</span>
+          <span class="metric-label">Signals</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="api-panel">
+    <h2>API Status</h2>
+    <div class="button-group">
+      <button (click)="testHealth()" class="btn btn-primary">Test Health</button>
+      <button (click)="testAgents()" class="btn btn-secondary">Get Agents</button>
+      <button (click)="clearResponse()" class="btn btn-outline">Clear</button>
+    </div>
+    <div class="response-box">
+      <pre>{{apiResponse | json}}</pre>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Team Lead: <strong>Pcsnlt</strong> | Technical Architect: OpenClaw AI</p>
+    <p>Modular Architecture: Angular 17 + Spring Boot 3.2 + Docker</p>
+  </footer>
+</div>
