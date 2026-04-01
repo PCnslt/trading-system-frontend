@@ -1,0 +1,71 @@
+[tool.poetry]
+name = "local-memory-system"
+version = "1.0.0"
+description = "Production-ready local memory system with RAG and cost optimization"
+authors = ["OpenClaw AI <ai@openclaw.ai>"]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.104.1"
+uvicorn = {extras = ["standard"], version = "^0.24.0"}
+asyncpg = "^0.29.0"
+sqlalchemy = "^2.0.23"
+alembic = "^1.13.1"
+psycopg2-binary = "^2.9.9"
+redis = "^5.0.1"
+celery = {extras = ["redis"], version = "^5.3.6"}
+httpx = "^0.25.1"
+pydantic-settings = "^2.1.0"
+pyyaml = "^6.0.1"
+python-dotenv = "^1.0.0"
+sentence-transformers = "^2.2.2"
+numpy = "^1.24.3"
+tiktoken = "^0.5.2"
+tenacity = "^8.2.3"
+circuitbreaker = "^1.4.0"
+prometheus-client = "^0.19.0"
+structlog = "^23.2.0"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-multipart = "^0.0.6"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-asyncio = "^0.21.1"
+pytest-cov = "^4.1.0"
+black = "^23.12.1"
+isort = "^5.13.2"
+flake8 = "^7.0.0"
+mypy = "^1.8.0"
+pre-commit = "^3.6.0"
+
+[tool.poetry.scripts]
+memory-cli = "src.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+asyncio_mode = "auto"

@@ -1,0 +1,82 @@
+services:
+  # PostgreSQL with pgvector extension
+  postgres:
+    image: ankane/pgvector:latest
+    container_name: memory_postgres
+    environment:
+      POSTGRES_DB: memory_system
+      POSTGRES_USER: memory_user
+      POSTGRES_PASSWORD: memory_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U memory_user -d memory_system"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - memory_network
+
+  # Ollama for local AI models
+  ollama:
+    image: ollama/ollama:latest
+    container_name: memory_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      OLLAMA_CONTEXT_LENGTH: 8192
+    command: serve
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 40s
+    networks:
+      - memory_network
+
+  # FastAPI application
+  app:
+    build: .
+    container_name: memory_app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgresql://memory_user:memory_password@postgres:5432/memory_system
+      OLLAMA_URL: http://ollama:11434
+      EMBEDDING_MODEL: nomic-embed-text
+      GENERATION_MODEL: llama3.2:3b
+      LOG_LEVEL: INFO
+      API_DEBUG: "false"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+      - ./config:/app/config
+      - ./requirements.txt:/app/requirements.txt
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+             uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - memory_network
+
+volumes:
+  postgres_data:
+  ollama_data:
+
+networks:
+  memory_network:
+    driver: bridge

@@ -1,0 +1,29 @@
+# Core dependencies
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# Database
+asyncpg==0.29.0
+sqlalchemy==2.0.23
+alembic==1.13.1
+psycopg2-binary==2.9.9
+
+# Vector embeddings
+numpy==1.24.3
+sentence-transformers==2.2.2
+
+# HTTP client
+httpx==0.25.1
+
+# Configuration
+pydantic-settings==2.1.0
+pyyaml==6.0.1
+
+# Utilities
+python-dotenv==1.0.0
+redis==5.0.1
+tiktoken==0.5.2
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
