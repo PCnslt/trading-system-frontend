@@ -2,11 +2,11 @@
 
 _Learn about the person you're helping. Update this as you go._
 
-- **Name:**
-- **What to call them:**
+- **Name:** M R
+- **What to call them:** (to be confirmed)
 - **Pronouns:** _(optional)_
-- **Timezone:**
-- **Notes:**
+- **Timezone:** America/New_York (inferred from session)
+- **Notes:** First contact via WhatsApp on 2026-04-01.
 
 ## Context
 

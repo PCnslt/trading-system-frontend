@@ -16,23 +16,26 @@
 
 ## Skills to Deactivate (Priority Order)
 
-### 1. **healthcheck** (High Priority)
+### 1. **healthcheck** (High Priority) - DEACTIVATED 2026-04-01
 - **Reason**: Identified in audit as first skill to prune
 - **Status**: Exists in global directory
 - **Action**: Document as "do not use" unless specifically needed for security audits
 - **Alternative**: Use system-monitor or create custom health checks
+- **Deactivation Date**: 2026-04-01
 
-### 2. **ai-humanizer** (High Priority)
+### 2. **ai-humanizer** (High Priority) - DEACTIVATED 2026-04-01
 - **Reason**: Duplicate of **humanizer** skill
 - **Status**: Both exist, humanizer is actively used
 - **Action**: Mark ai-humanizer as deprecated, use humanizer only
 - **Note**: Humanizer is core principle ("Humanize everything")
+- **Deactivation Date**: 2026-04-01
 
-### 3. **evolver** (High Priority)
+### 3. **evolver** (High Priority) - DEACTIVATED 2026-04-01
 - **Reason**: Duplicate of **capability-evolver**
 - **Status**: Both exist, capability-evolver is being integrated
 - **Action**: Mark evolver as deprecated, use capability-evolver only
 - **Note**: Capability-evolver has A2A_NODE_ID integration
+- **Deactivation Date**: 2026-04-01
 
 ### 4. **qmd** and **qmd-cli** (Medium Priority)
 - **Reason**: Replaced by **mdsearch-pro**

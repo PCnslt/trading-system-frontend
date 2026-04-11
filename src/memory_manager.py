@@ -39,6 +39,8 @@ class MemoryManager:
             # Get embedding
             ollama = await self._get_ollama_client()
             embedding = await ollama.get_embedding(content)
+            # Convert to string representation for PostgreSQL vector type
+            embedding_str = '[' + ','.join(str(v) for v in embedding) + ']'
             
             # Log cost (local = $0)
             await self.cost_tracker.log_usage(
@@ -65,7 +67,7 @@ class MemoryManager:
                     (id, content, embedding, metadata, embedding_model)
                     VALUES ($1, $2, $3, $4, $5)
                 """,
-                memory_id, content, embedding, json.dumps(full_metadata),
+                memory_id, content, embedding_str, json.dumps(full_metadata),
                 config.embedding_model)
             
             logger.info(f"Memory stored with ID: {memory_id}")
@@ -87,6 +89,8 @@ class MemoryManager:
             # Get query embedding
             ollama = await self._get_ollama_client()
             query_embedding = await ollama.get_embedding(query)
+            # Convert to string representation for PostgreSQL vector type
+            query_embedding_str = '[' + ','.join(str(v) for v in query_embedding) + ']'
             
             # Log cost (local = $0)
             await self.cost_tracker.log_usage(
@@ -99,7 +103,7 @@ class MemoryManager:
             
             # Build filter conditions
             filter_conditions = []
-            filter_params = [query_embedding, top_k]
+            filter_params = [query_embedding_str, top_k]
             
             if filters:
                 for i, (key, value) in enumerate(filters.items(), start=3):
@@ -162,6 +166,8 @@ class MemoryManager:
                 # Get new embedding
                 ollama = await self._get_ollama_client()
                 embedding = await ollama.get_embedding(content)
+                # Convert to string representation for PostgreSQL vector type
+                embedding_str = '[' + ','.join(str(v) for v in embedding) + ']'
                 
                 # Log cost
                 await self.cost_tracker.log_usage(
@@ -181,7 +187,7 @@ class MemoryManager:
                             metadata = $3,
                             embedding_model = $4
                         WHERE id = $5
-                    """, content, embedding, json.dumps(metadata),
+                    """, content, embedding_str, json.dumps(metadata),
                     config.embedding_model, uuid.UUID(memory_id))
                 else:
                     await pool.execute("""
@@ -190,7 +196,7 @@ class MemoryManager:
                             embedding = $2,
                             embedding_model = $3
                         WHERE id = $4
-                    """, content, embedding, config.embedding_model,
+                    """, content, embedding_str, config.embedding_model,
                     uuid.UUID(memory_id))
             elif metadata is not None:
                 # Just update metadata

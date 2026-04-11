@@ -170,7 +170,49 @@
 - Metacognitive improvement → Enable trading agent self-optimization
 - Learning signals → Improve trading algorithms based on performance
 
+### HyperAgents Implementation (Enhanced)
+**Rule 7: Task‑Cycle Metacognitive Review** (Added: April 3, 2026 6:30 PM)
+**IF**: Task cycle completed (any task, micro or macro)
+**THEN**: Must perform 2‑minute metacognitive review:
+  1. **What worked?** Identify successful patterns
+  2. **What didn't?** Note execution gaps or inefficiencies
+  3. **Improvement opportunity?** One specific framework enhancement
+  4. **Next‑cycle adjustment?** Apply learning to next task
+
+**PROCESS**:
+1. **Complete task** → Finish current micro/macro task
+2. **2‑minute review** → Answer the 4 questions above
+3. **Document learning** → Add to progress tracker or memory
+4. **Adjust framework** → If improvement identified, update rules
+5. **Apply to next task** → Use learning immediately
+
+**EXAMPLE**:
+- **Task completed**: Evening evaluation (this document)
+- **What worked?** Research thorough, analysis detailed
+- **What didn't?** 0/5 improvement targets executed
+- **Improvement opportunity?** Automatic consequence triggering
+- **Next‑cycle adjustment?** Apply Level 1 warning for missed targets
+
+**INTEGRATION WITH RULE 6**:
+- Rule 6: Framework‑level metacognitive improvement
+- Rule 7: Task‑level metacognitive review
+- **Combined**: Continuous improvement at both granularities
+
+**SUCCESS METRICS**:
+- **Daily**: 5+ task‑cycle reviews completed
+- **Weekly**: 2+ framework improvements from reviews
+- **Monthly**: 20% reduction in execution gaps
+
 ---
+
+**Framework Active**: Yes
+**First Test Start**: 1:40 PM
+**Success Criteria**: Complete test within 5 minutes
+**Consequence**: Level 1 warning if failed
+**Next Checkpoint**: 1:45 PM
+**HyperAgents Integrated**: Yes (Rule 6 added)
+**Metacognitive Cycle**: Active - framework can self-improve
+**Task‑Cycle Review**: Rule 7 added (April 3, 2026)
 **Framework Active**: Yes
 **First Test Start**: 1:40 PM
 **Success Criteria**: Complete test within 5 minutes

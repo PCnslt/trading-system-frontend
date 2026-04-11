@@ -60,13 +60,6 @@ services:
     networks:
       - memory_network
     restart: unless-stopped
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
 
   # Celery worker for async tasks (memory consolidation, etc.)
   celery_worker:
@@ -136,7 +129,7 @@ services:
       redis:
         condition: service_healthy
       ollama:
-        condition: service_healthy
+        condition: service_started
     environment:
       DATABASE_URL: postgresql://memory_user:memory_password@postgres:5432/memory_system
       OLLAMA_URL: http://ollama:11434
@@ -157,8 +150,7 @@ services:
       - ./config:/app/config
       - ./alembic:/app/alembic
     command: >
-      sh -c "alembic upgrade head &&
-             uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"
+      sh -c "uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
@@ -216,4 +208,4 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: 172.25.0.0/16
