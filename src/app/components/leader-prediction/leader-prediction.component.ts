@@ -234,17 +234,260 @@ interface Prediction {
     </div>
   `,
   styles: [`
-    .progress-bar-high { background-color: #28a745; }
-    .progress-bar-medium { background-color: #ffc107; }
-    .progress-bar-low { background-color: #dc3545; }
+    .progress-bar-high { 
+      background: linear-gradient(135deg, var(--accent-green) 0%, #00b377 100%);
+    }
+    .progress-bar-medium { 
+      background: linear-gradient(135deg, var(--accent-yellow) 0%, #e69500 100%);
+    }
+    .progress-bar-low { 
+      background: linear-gradient(135deg, var(--accent-red) 0%, #e62e5c 100%);
+    }
     
-    .badge-stock { background-color: #007bff; }
-    .badge-crypto { background-color: #6f42c1; }
-    .badge-etf { background-color: #20c997; }
+    .badge-stock { 
+      background: linear-gradient(135deg, var(--accent-blue) 0%, #2952cc 100%);
+      color: white;
+    }
+    .badge-crypto { 
+      background: linear-gradient(135deg, var(--accent-purple) 0%, #7a1fd2 100%);
+      color: white;
+    }
+    .badge-etf { 
+      background: linear-gradient(135deg, var(--accent-cyan) 0%, #00bbd6 100%);
+      color: #000;
+    }
     
-    .signal-buy { color: #28a745; }
-    .signal-sell { color: #dc3545; }
-    .signal-hold { color: #ffc107; }
+    .signal-buy { 
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+    .signal-sell { 
+      color: var(--accent-red);
+      font-weight: 600;
+    }
+    .signal-hold { 
+      color: var(--accent-yellow);
+      font-weight: 600;
+    }
+    
+    .prediction-card {
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s;
+    }
+    .prediction-card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px var(--shadow-color);
+    }
+    .prediction-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .prediction-symbol {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .prediction-category {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .prediction-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .metric-item {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+    .metric-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .prediction-confidence {
+      background: linear-gradient(135deg, rgba(51, 102, 255, 0.1) 0%, rgba(51, 102, 255, 0.05) 100%);
+      border: 1px solid rgba(51, 102, 255, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .confidence-bar {
+      height: 8px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    .confidence-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(135deg, var(--accent-blue) 0%, #2952cc 100%);
+    }
+    .prediction-reasoning {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      padding: 1rem;
+      border-left: 3px solid var(--accent-blue);
+    }
+    .reasoning-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+    .reasoning-text {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .leaderboard {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .leaderboard-header {
+      background: var(--bg-secondary);
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .leaderboard-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: background-color 0.2s;
+    }
+    .leaderboard-item:hover {
+      background: var(--bg-hover);
+    }
+    .leaderboard-item:last-child {
+      border-bottom: none;
+    }
+    .leaderboard-rank {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.875rem;
+      margin-right: 1rem;
+      background: linear-gradient(135deg, var(--accent-blue) 0%, #2952cc 100%);
+      color: white;
+    }
+    .leaderboard-symbol {
+      flex: 1;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .leaderboard-score {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-right: 1rem;
+    }
+    .leaderboard-signal {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .signal-buy-badge {
+      background: rgba(0, 214, 143, 0.1);
+      color: var(--accent-green);
+      border: 1px solid rgba(0, 214, 143, 0.3);
+    }
+    .signal-sell-badge {
+      background: rgba(255, 61, 113, 0.1);
+      color: var(--accent-red);
+      border: 1px solid rgba(255, 61, 113, 0.3);
+    }
+    .signal-hold-badge {
+      background: rgba(143, 155, 179, 0.1);
+      color: var(--text-muted);
+      border: 1px solid rgba(143, 155, 179, 0.3);
+    }
+    .category-filter {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .filter-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .filter-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 0.375rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      background: var(--bg-hover);
+      border-color: var(--accent-blue);
+    }
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--accent-blue) 0%, #2952cc 100%);
+      color: white;
+      border-color: var(--accent-blue);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: var(--text-muted);
+    }
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    .empty-text {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+    .empty-subtext {
+      font-size: 0.875rem;
+      opacity: 0.7;
+    }
   `]
 })
 export class LeaderPredictionComponent implements OnInit {

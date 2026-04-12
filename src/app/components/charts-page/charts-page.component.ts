@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { MonitoringService, PriceHistoryData } from '../../services/monitoring.service';
@@ -8,9 +9,33 @@ import { MonitoringService, PriceHistoryData } from '../../services/monitoring.s
 @Component({
   selector: 'app-charts-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, BaseChartDirective],
+  imports: [CommonModule, FormsModule, RouterModule, BaseChartDirective],
   template: `
     <div class="container-fluid py-4">
+      <!-- Navigation Header -->
+      <div class="row mb-4">
+        <div class="col-md-12">
+          <div class="card bg-primary text-white">
+            <div class="card-body py-2">
+              <div class="d-flex flex-wrap gap-2 align-items-center">
+                <a routerLink="/" class="btn btn-sm btn-outline-light">
+                  <i class="bi bi-speedometer2 me-1"></i> Back to Dashboard
+                </a>
+                <a routerLink="/charts" class="btn btn-sm btn-light active">
+                  <i class="bi bi-graph-up me-1"></i> Charts
+                </a>
+                <a routerLink="/portfolio" class="btn btn-sm btn-outline-light">
+                  <i class="bi bi-wallet2 me-1"></i> Portfolio
+                </a>
+                <div class="ms-auto">
+                  <span class="badge bg-success">Charts & Analytics Page</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Page Header -->
       <div class="row mb-4">
         <div class="col-md-12">
@@ -317,23 +342,131 @@ import { MonitoringService, PriceHistoryData } from '../../services/monitoring.s
     </div>
   `,
   styles: [`
-    .chart-container {
-      position: relative;
-      height: 300px;
-      width: 100%;
+    /* Component-specific styles for dark theme */
+    .btn-group .btn {
+      border-radius: 6px !important;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
     }
-    .card {
-      border: none;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      transition: transform 0.2s;
+    .btn-group .btn.active {
+      background: linear-gradient(135deg, var(--accent-blue) 0%, #2952cc 100%);
+      color: white;
+      border-color: var(--accent-blue);
     }
-    .card:hover {
+    .btn-group .btn:hover:not(.active) {
+      background: var(--bg-hover);
+      border-color: var(--accent-blue);
+    }
+    .chart-controls {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .indicator-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.25rem;
+      height: 100%;
+      transition: all 0.3s;
+    }
+    .indicator-card:hover {
+      border-color: var(--accent-blue);
       transform: translateY(-2px);
-      box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+      box-shadow: 0 6px 18px var(--shadow-color);
     }
-    .card-header {
-      background-color: rgba(248, 249, 250, 0.9);
-      border-bottom: 1px solid rgba(0,0,0,0.1);
+    .indicator-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .indicator-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+    .indicator-signal {
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      display: inline-block;
+    }
+    .signal-buy {
+      background: rgba(0, 214, 143, 0.1);
+      color: var(--accent-green);
+      border: 1px solid rgba(0, 214, 143, 0.3);
+    }
+    .signal-sell {
+      background: rgba(255, 61, 113, 0.1);
+      color: var(--accent-red);
+      border: 1px solid rgba(255, 61, 113, 0.3);
+    }
+    .signal-hold {
+      background: rgba(143, 155, 179, 0.1);
+      color: var(--text-muted);
+      border: 1px solid rgba(143, 155, 179, 0.3);
+    }
+    .agent-performance-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      transition: all 0.2s;
+    }
+    .agent-performance-card:hover {
+      background: var(--bg-hover);
+      border-color: var(--accent-blue);
+    }
+    .performance-bar {
+      height: 8px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    .performance-fill {
+      height: 100%;
+      border-radius: 4px;
+    }
+    .performance-high {
+      background: linear-gradient(135deg, var(--accent-green) 0%, #00b377 100%);
+    }
+    .performance-medium {
+      background: linear-gradient(135deg, var(--accent-yellow) 0%, #e69500 100%);
+    }
+    .performance-low {
+      background: linear-gradient(135deg, var(--accent-red) 0%, #e62e5c 100%);
+    }
+    .signal-distribution {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+    .distribution-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+    .distribution-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .distribution-percentage {
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
     }
   `]
 })

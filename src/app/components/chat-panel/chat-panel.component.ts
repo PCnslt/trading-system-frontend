@@ -48,6 +48,19 @@ import { MonitoringService, ChatMessage } from '../../services/monitoring.servic
         <div *ngIf="filteredMessages.length === 0" class="text-center text-muted py-3">
           No chat messages to display
         </div>
+
+      <!-- Chat Input -->
+      <div class="mt-3 p-2 border-top">
+        <div class="input-group input-group-sm">
+          <input type="text" class="form-control" placeholder="Type a test message..." 
+                 [(ngModel)]="newMessage" (keyup.enter)="sendTestMessage()">
+          <button class="btn btn-primary" type="button" (click)="sendTestMessage()">
+            <i class="bi bi-send"></i> Send
+          </button>
+        </div>
+        <small class="text-muted">Test chat functionality with agents</small>
+      </div>
+
       </div>
       
       <div class="mt-3">
@@ -65,20 +78,109 @@ import { MonitoringService, ChatMessage } from '../../services/monitoring.servic
       font-size: 0.875rem;
     }
     .chat-message {
-      background-color: #f8f9fa;
-      border-left: 3px solid #0d6efd;
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+      border-left: 3px solid var(--accent-blue);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .chat-message:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px var(--shadow-color);
     }
     .chat-message.alert {
-      border-left-color: #dc3545;
-      background-color: #fff5f5;
+      border-left-color: var(--accent-red);
+      background: linear-gradient(135deg, rgba(255, 61, 113, 0.1) 0%, var(--bg-card) 100%);
+      border-color: rgba(255, 61, 113, 0.3);
     }
     .chat-message.reasoning {
-      border-left-color: #198754;
-      background-color: #f0fff4;
+      border-left-color: var(--accent-green);
+      background: linear-gradient(135deg, rgba(0, 214, 143, 0.1) 0%, var(--bg-card) 100%);
+      border-color: rgba(0, 214, 143, 0.3);
+    }
+    .btn-group .btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
     }
     .btn-group .btn.active {
-      background-color: #0d6efd;
+      background: linear-gradient(135deg, var(--accent-blue) 0%, #2952cc 100%);
       color: white;
+      border-color: var(--accent-blue);
+    }
+    .btn-group .btn:hover:not(.active) {
+      background: var(--bg-hover);
+      border-color: var(--accent-blue);
+    }
+    .chat-input {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+    }
+    .chat-input:focus {
+      background: var(--bg-card);
+      border-color: var(--accent-blue);
+      color: var(--text-primary);
+      box-shadow: 0 0 0 0.25rem var(--glow-blue);
+    }
+    .chat-messages {
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-blue) var(--bg-secondary);
+    }
+    .chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    .chat-messages::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+      border-radius: 3px;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: var(--accent-blue);
+      border-radius: 3px;
+    }
+    .message-sender {
+      font-weight: 600;
+      color: var(--accent-blue);
+    }
+    .message-receiver {
+      font-weight: 600;
+      color: var(--accent-green);
+    }
+    .message-timestamp {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+    .message-content {
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+    .message-context {
+      color: var(--text-muted);
+      font-style: italic;
+      font-size: 0.8rem;
+      border-left: 2px solid var(--border-color);
+      padding-left: 0.5rem;
+      margin-top: 0.25rem;
+    }
+    .message-symbol {
+      background: rgba(51, 102, 255, 0.1);
+      color: var(--accent-blue);
+      border: 1px solid rgba(51, 102, 255, 0.3);
+    }
+    .empty-chat {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+    }
+    .empty-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.5;
+    }
+    .empty-text {
+      font-size: 0.875rem;
     }
   `]
 })

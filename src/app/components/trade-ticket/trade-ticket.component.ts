@@ -117,20 +117,233 @@ import { MonitoringService, TradeRecommendation } from '../../services/monitorin
     </div>
   `,
   styles: [`
+    /* Component-specific styles for dark theme */
     .trade-ticket {
-      font-size: 0.875rem;
+      font-size: 0.9rem;
     }
     .trade-card {
-      background-color: #f8f9fa;
-      border-left: 4px solid #0d6efd;
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+      border-left: 4px solid var(--accent-blue);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      transition: all 0.3s;
+      border: 1px solid var(--border-color);
+    }
+    .trade-card:hover {
+      box-shadow: 0 8px 24px var(--shadow-color);
+      transform: translateY(-4px);
+      border-color: var(--accent-blue);
     }
     .trade-card.executed {
-      border-left-color: #198754;
-      background-color: #f0fff4;
+      border-left-color: var(--accent-green);
+      background: linear-gradient(135deg, rgba(0, 214, 143, 0.1) 0%, var(--bg-card) 100%);
+      border-color: rgba(0, 214, 143, 0.3);
     }
     .trade-card.cancelled {
-      border-left-color: #6c757d;
-      background-color: #f8f9fa;
+      border-left-color: var(--accent-purple);
+      background: linear-gradient(135deg, rgba(143, 155, 179, 0.1) 0%, var(--bg-card) 100%);
+      border-color: rgba(143, 155, 179, 0.3);
+    }
+    .trade-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .trade-symbol {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+    .trade-agent {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    .trade-status {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .status-active {
+      background: rgba(51, 102, 255, 0.1);
+      color: var(--accent-blue);
+      border: 1px solid rgba(51, 102, 255, 0.3);
+    }
+    .status-executed {
+      background: rgba(0, 214, 143, 0.1);
+      color: var(--accent-green);
+      border: 1px solid rgba(0, 214, 143, 0.3);
+    }
+    .status-cancelled {
+      background: rgba(143, 155, 179, 0.1);
+      color: var(--text-muted);
+      border: 1px solid rgba(143, 155, 179, 0.3);
+    }
+    .confidence-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .confidence-high {
+      background: rgba(0, 214, 143, 0.1);
+      color: var(--accent-green);
+      border: 1px solid rgba(0, 214, 143, 0.3);
+    }
+    .confidence-medium {
+      background: rgba(255, 170, 0, 0.1);
+      color: var(--accent-yellow);
+      border: 1px solid rgba(255, 170, 0, 0.3);
+    }
+    .confidence-low {
+      background: rgba(255, 61, 113, 0.1);
+      color: var(--accent-red);
+      border: 1px solid rgba(255, 61, 113, 0.3);
+    }
+    .trade-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .metric-item {
+      text-align: center;
+    }
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+    .metric-value {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .metric-change {
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 0.25rem;
+    }
+    .change-positive {
+      background: rgba(0, 214, 143, 0.1);
+      color: var(--accent-green);
+    }
+    .change-negative {
+      background: rgba(255, 61, 113, 0.1);
+      color: var(--accent-red);
+    }
+    .trade-rationale {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid var(--accent-blue);
+    }
+    .rationale-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+    .rationale-text {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .trade-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-color);
+    }
+    .trade-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .empty-trades {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      color: var(--text-muted);
+    }
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    .empty-text {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+    .empty-subtext {
+      font-size: 0.875rem;
+      opacity: 0.7;
+    }
+    .recent-trades {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+    }
+    .recent-header {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .recent-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .recent-item:last-child {
+      border-bottom: none;
+    }
+    .recent-symbol {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .recent-status {
+      font-size: 0.75rem;
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+    }
+    .recent-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .border-top {
+      border-top: 1px solid var(--border-color) !important;
+    }
+    .fw-bold {
+      font-weight: 600 !important;
     }
   `]
 })

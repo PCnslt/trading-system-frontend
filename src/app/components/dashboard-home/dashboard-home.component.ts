@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { RouterModule, RouterLinkActive } from '@angular/router';
 import { environment } from '../../../environments/index'; // environment config
 import { AgentActivityFeedComponent } from '../agent-activity-feed/agent-activity-feed.component';
 import { AgentStatusTableComponent } from '../agent-status-dashboard/agent-status-table.component';
 import { PerformanceMetricsComponent } from '../performance-metrics/performance-metrics.component';
 import { AgentControlPanelComponent } from '../agent-control-panel/agent-control-panel.component';
+import { ChatPanelComponent } from '../chat-panel/chat-panel.component';
+import { LeaderPredictionComponent } from '../leader-prediction/leader-prediction.component';
 import { MonitoringService } from '../../services/monitoring.service';
 
 interface TopRecommendation {
@@ -38,36 +41,47 @@ interface AgentActivity {
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     AgentActivityFeedComponent,
     AgentControlPanelComponent,
     AgentStatusTableComponent,
-    PerformanceMetricsComponent
+    PerformanceMetricsComponent,
+    ChatPanelComponent,
+    LeaderPredictionComponent
   ],
   template: `
     <div class="container-fluid p-3">
       <!-- Main Header -->
       <div class="row mb-4">
-        <div class="col-md-8">
-          <div class="d-flex align-items-center">
-            <div class="me-3">
-              <div class="h4 mb-1 text-white fw-bold">🚀 Trading Agent System</div>
-              <div class="text-white">10-agent real-time analysis dashboard</div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 text-end">
-          <div class="d-flex justify-content-end gap-3">
-            <div class="text-center">
-              <div class="h5 mb-0 fw-bold" [ngClass]="backendStatus === '✅ Connected' ? 'text-success' : 'text-danger'">{{backendStatus}}</div>
-              <div class="small fw-bold text-white">Backend</div>
-            </div>
-            <div class="text-center">
-              <div class="h5 mb-0 fw-bold" [ngClass]="websocketStatus === '✅ Connected' ? 'text-success' : 'text-danger'">{{websocketStatus}}</div>
-              <div class="small fw-bold text-white">WebSocket</div>
-            </div>
-            <div class="text-center">
-              <div class="h5 mb-0 fw-bold text-primary">{{totalTickers || 0}}</div>
-              <div class="small fw-bold text-white">Tickers</div>
+        <div class="col-12">
+          <div class="card gradient-primary text-white">
+            <div class="card-body py-3">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="d-flex align-items-center">
+                    <div class="me-3">
+                      <div class="h4 mb-1 fw-bold">🚀 Trading Agent System</div>
+                      <div class="text-white-75">10-agent real-time analysis dashboard with thousands of stocks, ETFs, and cryptocurrencies</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 text-end">
+                  <div class="d-flex justify-content-end gap-3">
+                    <div class="text-center">
+                      <div class="h5 mb-0 fw-bold" [ngClass]="backendStatus === '✅ Connected' ? 'text-success' : 'text-warning'">{{backendStatus}}</div>
+                      <div class="small text-white-75">Backend</div>
+                    </div>
+                    <div class="text-center">
+                      <div class="h5 mb-0 fw-bold" [ngClass]="websocketStatus === '✅ Connected' ? 'text-success' : 'text-warning'">{{websocketStatus}}</div>
+                      <div class="small text-white-75">WebSocket</div>
+                    </div>
+                    <div class="text-center">
+                      <div class="h5 mb-0 fw-bold text-white">{{totalTickers || 0}}</div>
+                      <div class="small text-white-75">Tickers</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -76,24 +90,28 @@ interface AgentActivity {
       <!-- Navigation Tabs -->
       <div class="row mb-4">
         <div class="col-12">
-          <div class="card bg-light">
+          <div class="card bg-primary text-white">
             <div class="card-body py-2">
               <div class="d-flex flex-wrap gap-2">
-                <button class="btn btn-sm btn-primary">
+                <a routerLink="/" class="btn btn-sm btn-light" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                   <i class="bi bi-speedometer2 me-1"></i> Dashboard
-                </button>
-                <button class="btn btn-sm btn-outline-primary">
+                </a>
+                <a routerLink="/charts" class="btn btn-sm btn-outline-light" routerLinkActive="active">
                   <i class="bi bi-graph-up me-1"></i> Charts
-                </button>
-                <button class="btn btn-sm btn-outline-primary">
+                </a>
+                <a routerLink="/portfolio" class="btn btn-sm btn-outline-light" routerLinkActive="active">
                   <i class="bi bi-wallet2 me-1"></i> Portfolio
-                </button>
-                <button class="btn btn-sm btn-outline-primary">
+                </a>
+                <button class="btn btn-sm btn-outline-light" disabled title="Coming soon">
                   <i class="bi bi-funnel me-1"></i> Filter
                 </button>
-                <button class="btn btn-sm btn-outline-primary">
+                <button class="btn btn-sm btn-outline-light" disabled title="Coming soon">
                   <i class="bi bi-heart-pulse me-1"></i> Health
                 </button>
+                <div class="ms-auto d-flex align-items-center">
+                  <span class="small text-white-75 me-2">Navigation:</span>
+                  <span class="badge bg-success">Click buttons to navigate</span>
+                </div>
               </div>
             </div>
           </div>
@@ -103,38 +121,38 @@ interface AgentActivity {
       <!-- Quick Stats Row -->
       <div class="row mb-4">
         <div class="col-md-3">
-          <div class="card h-100 border-primary">
+          <div class="card h-100 bg-primary text-white">
             <div class="card-body text-center">
               <div class="h4 mb-2">📊</div>
               <div class="h5 mb-1 fw-bold">{{totalTickers || 0}}</div>
-              <div class="small fw-bold text-white">Total Tickers</div>
+              <div class="small fw-bold">Total Tickers</div>
             </div>
           </div>
         </div>
         <div class="col-md-3">
-          <div class="card h-100 border-success">
+          <div class="card h-100 bg-success text-white">
             <div class="card-body text-center">
               <div class="h4 mb-2">👥</div>
               <div class="h5 mb-1 fw-bold">10</div>
-              <div class="small fw-bold text-white">Active Agents</div>
+              <div class="small fw-bold">Active Agents</div>
             </div>
           </div>
         </div>
         <div class="col-md-3">
-          <div class="card h-100 border-warning">
+          <div class="card h-100 bg-warning text-white">
             <div class="card-body text-center">
               <div class="h4 mb-2">📈</div>
               <div class="h5 mb-1 fw-bold">{{totalAnalyses || 0}}</div>
-              <div class="small fw-bold text-white">Analyses Today</div>
+              <div class="small fw-bold">Analyses Today</div>
             </div>
           </div>
         </div>
         <div class="col-md-3">
-          <div class="card h-100 border-info">
+          <div class="card h-100 bg-info text-white">
             <div class="card-body text-center">
               <div class="h4 mb-2">⏱️</div>
               <div class="h5 mb-1 fw-bold">{{uptime || '0h'}}</div>
-              <div class="small fw-bold text-white">System Uptime</div>
+              <div class="small fw-bold">System Uptime</div>
             </div>
           </div>
         </div>
@@ -145,7 +163,7 @@ interface AgentActivity {
         <!-- Left Column: Top Recommendations -->
         <div class="col-lg-8">
           <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
               <h5 class="mb-0">🎯 Top Recommendations (Profitability Order)</h5>
               <div>
                 <select class="form-select form-select-sm w-auto d-inline-block" [(ngModel)]="selectedCategory" (change)="generateRecommendations()">
@@ -255,7 +273,7 @@ interface AgentActivity {
 
           <!-- Agent Control Panel -->
           <div class="card mb-4">
-            <div class="card-header">
+            <div class="card-header bg-warning text-white">
               <h5 class="mb-0">🎮 Agent Control Panel</h5>
             </div>
             <div class="card-body">
@@ -263,9 +281,29 @@ interface AgentActivity {
             </div>
           </div>
 
+          <!-- Chat with Agents -->
+          <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+              <h5 class="mb-0">💬 Chat with All Agents</h5>
+            </div>
+            <div class="card-body">
+              <app-chat-panel></app-chat-panel>
+            </div>
+          </div>
+
+          <!-- Leader Prediction Dashboard -->
+          <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+              <h5 class="mb-0">👑 Leader Prediction Dashboard</h5>
+            </div>
+            <div class="card-body">
+              <app-leader-prediction></app-leader-prediction>
+            </div>
+          </div>
+
           <!-- Raw Logs Section -->
           <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-secondary text-white">
               <h5 class="mb-0">📋 Raw System Logs</h5>
             </div>
             <div class="card-body">
@@ -299,7 +337,7 @@ interface AgentActivity {
         <div class="col-lg-4">
           <!-- Agent Status -->
           <div class="card mb-4">
-            <div class="card-header">
+            <div class="card-header bg-dark text-white">
               <h5 class="mb-0">📊 Agent Status</h5>
             </div>
             <div class="card-body">
@@ -309,7 +347,7 @@ interface AgentActivity {
 
           <!-- Recent Activity -->
           <div class="card mb-4">
-            <div class="card-header">
+            <div class="card-header bg-info text-white">
               <h5 class="mb-0">📝 Recent Activity</h5>
             </div>
             <div class="card-body" style="max-height: 300px; overflow-y: auto;">
@@ -319,7 +357,7 @@ interface AgentActivity {
 
           <!-- Performance Metrics -->
           <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-success text-white">
               <h5 class="mb-0">📊 Performance Metrics</h5>
             </div>
             <div class="card-body">
@@ -350,66 +388,7 @@ interface AgentActivity {
       </footer>
     </div>
   `,
-  styles: [`
-    .extra-small {
-      font-size: 0.75rem;
-    }
-    .log-entry {
-      border-left: 3px solid transparent;
-      padding-left: 8px;
-    }
-    .log-info {
-      border-left-color: var(--accent-blue);
-    }
-    .log-success {
-      border-left-color: var(--accent-green);
-    }
-    .log-warning {
-      border-left-color: var(--accent-yellow);
-    }
-    .log-error {
-      border-left-color: var(--accent-red);
-    }
-    .glass-card {
-      background: rgba(30, 58, 95, 0.7);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .rank-badge {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 0.875rem;
-    }
-    .table-dark {
-      background-color: var(--bg-card);
-      color: var(--text-primary);
-    }
-    .table-dark thead th {
-      background-color: var(--bg-secondary);
-      border-color: var(--border-color);
-      font-weight: 600;
-    }
-    .table-dark tbody tr {
-      border-color: var(--border-color);
-    }
-    .table-dark tbody tr:hover {
-      background-color: var(--bg-hover) !important;
-    }
-    .table-success {
-      background-color: rgba(0, 214, 143, 0.1) !important;
-    }
-    .table-primary {
-      background-color: rgba(51, 102, 255, 0.1) !important;
-    }
-    .table-secondary {
-      background-color: rgba(143, 155, 179, 0.1) !important;
-    }
-  `]
+  styles: []
 })
 export class DashboardHomeComponent implements OnInit {
   backendStatus = 'Checking...';
@@ -442,7 +421,7 @@ export class DashboardHomeComponent implements OnInit {
   ngOnInit() {
     this.checkBackendConnection();
     this.loadSystemStats();
-    this.generateRecommendations();
+    this.loadRecommendations();
     this.startSystemMonitoring();
   }
 
@@ -471,7 +450,7 @@ export class DashboardHomeComponent implements OnInit {
     this.http.get<any>(`${environment.apiUrl}/tickers/stats`)
       .subscribe({
         next: (data) => {
-          this.totalTickers = data.total || 0;
+          this.totalTickers = data.totalTickers || data.total || 0;
           this.addLog('info', 'Loaded ticker statistics', data);
         },
         error: (error) => {
@@ -493,23 +472,74 @@ export class DashboardHomeComponent implements OnInit {
       });
   }
 
+  // Load existing recommendations from backend
+  loadRecommendations() {
+    this.http.get<any[]>(`${environment.apiUrl}/trade-recommendations/latest?limit=10`)
+      .subscribe({
+        next: (recommendations) => {
+          if (recommendations && recommendations.length > 0) {
+            this.allRecommendations = recommendations;
+            // Set the first one as top recommendation
+            this.topRecommendation = recommendations[0];
+            this.addLog('success', `Loaded ${recommendations.length} recommendations`);
+          } else {
+            this.addLog('info', 'No existing recommendations found');
+          }
+        },
+        error: (error) => {
+          this.addLog('error', 'Failed to load recommendations', error);
+        }
+      });
+  }
+
   generateRecommendations() {
     this.isGenerating = true;
     this.addLog('info', `Generating recommendations for category: ${this.selectedCategory}`);
     
-    this.http.post<any>(`${environment.apiUrl}/trading/generate-recommendation`, {
-      category: this.selectedCategory
+    // In PRODUCTION: This should call a real trading algorithm service
+    // For now, we'll show an error since we don't have real data generation
+    this.addLog('error', 'Real recommendation generation not implemented in production. Requires trading algorithm service.', {
+      note: 'In production, this would call:',
+      services: ['Alpha Vantage API', 'ML prediction models', 'Real-time market data', 'Trading algorithms']
+    });
+    this.isGenerating = false;
+    
+    // TEMPORARY: Comment out the mock data generation
+    /*
+    this.http.post<any>(`${environment.apiUrl}/trade-recommendations`, {
+      symbol: 'AAPL', // Example only - would be real analysis
+      recommendation: 'HOLD', // Example only - would be real analysis
+      confidence: 0.75, // Example only - would be real analysis
+      price: 175.50, // Example only - would be real market price
+      targetPrice: 185.00, // Example only - would be real target
+      stopLoss: 165.00, // Example only - would be real stop loss
+      reasoning: 'Real analysis would go here',
+      agentId: 'technical-analyst-1',
+      timestamp: new Date().toISOString()
     }).subscribe({
       next: (response) => {
-        this.topRecommendation = response.recommendation;
-        this.allRecommendations = response.all_analyses || [];
+        // The backend returns the created recommendation in response.recommendation
+        const newRecommendation = response.recommendation;
+        
+        // Add to the beginning of the list
+        this.allRecommendations.unshift(newRecommendation);
+        
+        // Set as top recommendation
+        this.topRecommendation = newRecommendation;
+        
+        // Keep only last 20 recommendations
+        if (this.allRecommendations.length > 20) {
+          this.allRecommendations = this.allRecommendations.slice(0, 20);
+        }
+        
         this.lastRecommendationTime = new Date();
         this.isGenerating = false;
         
-        this.addLog('success', `Generated ${this.allRecommendations.length} recommendations`, {
-          top_symbol: this.topRecommendation?.symbol,
-          top_signal: this.topRecommendation?.signal,
-          top_confidence: this.topRecommendation?.confidence
+        this.addLog('success', `Generated new recommendation for ${newRecommendation.symbol}`, {
+          symbol: newRecommendation.symbol,
+          signal: newRecommendation.recommendation || newRecommendation.signal,
+          confidence: newRecommendation.confidence,
+          price: newRecommendation.price
         });
       },
       error: (error) => {
@@ -517,6 +547,7 @@ export class DashboardHomeComponent implements OnInit {
         this.isGenerating = false;
       }
     });
+    */
   }
 
   triggerAgentAnalysis(symbol: string, agentType: string) {
@@ -603,7 +634,7 @@ export class DashboardHomeComponent implements OnInit {
     switch (signal) {
       case 'BUY': return 'bg-success';
       case 'SELL': return 'bg-danger';
-      case 'HOLD': return 'bg-warning text-dark';
+      case 'HOLD': return 'bg-warning text-white';
       default: return 'bg-secondary';
     }
   }
@@ -635,6 +666,11 @@ export class DashboardHomeComponent implements OnInit {
       default: return '';
     }
   }
+
+  // In PRODUCTION: Real data methods would be here
+  // getRealTimePrice(symbol: string): Observable<number> { ... }
+  // getMarketAnalysis(symbol: string): Observable<any> { ... }
+  // generateRealRecommendation(): Observable<any> { ... }
 
   ngOnDestroy() {
     if (this.autoRefreshInterval) {

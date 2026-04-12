@@ -66,10 +66,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "trading-monitoring-dashboard:build:production"
+              "buildTarget": "trading-monitoring-dashboard:build:production"
             },
             "development": {
-              "browserTarget": "trading-monitoring-dashboard:build:development"
+              "buildTarget": "trading-monitoring-dashboard:build:development"
             }
           },
           "defaultConfiguration": "development"
