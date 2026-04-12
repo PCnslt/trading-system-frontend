@@ -1,0 +1,171 @@
+{
+  "top_recommendation": {
+    "symbol": "BTC",
+    "name": "Bitcoin",
+    "type": "crypto",
+    "consensus_signal": "HOLD",
+    "confidence": 0.8027301296347906,
+    "agent_count": 10,
+    "signal_distribution": {
+      "BUY": 3,
+      "SELL": 3,
+      "HOLD": 4
+    },
+    "reasoning": "Consensus: HOLD based on 3 BUY (30.0%), 3 SELL (30.0%), 4 HOLD (40.0%)",
+    "timestamp": "2026-04-11T22:19:50.915984"
+  },
+  "all_recommendations": [
+    {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "type": "crypto",
+      "consensus_signal": "HOLD",
+      "confidence": 0.8027301296347906,
+      "agent_count": 10,
+      "signal_distribution": {
+        "BUY": 3,
+        "SELL": 3,
+        "HOLD": 4
+      },
+      "reasoning": "Consensus: HOLD based on 3 BUY (30.0%), 3 SELL (30.0%), 4 HOLD (40.0%)",
+      "timestamp": "2026-04-11T22:19:50.915984"
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corporation",
+      "type": "stock",
+      "consensus_signal": "SELL",
+      "confidence": 0.7953091145749605,
+      "agent_count": 10,
+      "signal_distribution": {
+        "BUY": 4,
+        "SELL": 5,
+        "HOLD": 1
+      },
+      "reasoning": "Consensus: SELL based on 4 BUY (40.0%), 5 SELL (50.0%), 1 HOLD (10.0%)",
+      "timestamp": "2026-04-11T22:19:50.801974"
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon.com Inc.",
+      "type": "stock",
+      "consensus_signal": "BUY",
+      "confidence": 0.7932573126335685,
+      "agent_count": 10,
+      "signal_distribution": {
+        "BUY": 7,
+        "SELL": 2,
+        "HOLD": 1
+      },
+      "reasoning": "Consensus: BUY based on 7 BUY (70.0%), 2 SELL (20.0%), 1 HOLD (10.0%)",
+      "timestamp": "2026-04-11T22:19:50.733511"
+    },
+    {
+      "symbol": "SPY",
+      "name": "SPDR S&P 500 ETF",
+      "type": "etf",
+      "consensus_signal": "BUY",
+      "confidence": 0.7784146974983418,
+      "agent_count": 10,
+      "signal_distribution": {
+        "BUY": 4,
+        "SELL": 3,
+        "HOLD": 3
+      },
+      "reasoning": "Consensus: BUY based on 4 BUY (40.0%), 3 SELL (30.0%), 3 HOLD (30.0%)",
+      "timestamp": "2026-04-11T22:19:51.003511"
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms Inc.",
+      "type": "stock",
+      "consensus_signal": "BUY",
+      "confidence": 0.7748101257551162,
+      "agent_count": 10,
+      "signal_distribution": {
+        "BUY": 5,
+        "SELL": 2,
+        "HOLD": 3
+      },
+      "reasoning": "Consensus: BUY based on 5 BUY (50.0%), 2 SELL (20.0%), 3 HOLD (30.0%)",
+      "timestamp": "2026-04-11T22:19:50.890571"
+    },
+    {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "type": "crypto",
+      "consensus_signal": "BUY",
+      "confidence": 0.762885163549171,
+      "agent_count": 10,
+      "signal_distribution": {
+        "BUY": 6,
+        "SELL": 3,
+        "HOLD": 1
+      },
+      "reasoning": "Consensus: BUY based on 6 BUY (60.0%), 3 SELL (30.0%), 1 HOLD (10.0%)",
+      "timestamp": "2026-04-11T22:19:50.940963"
+    },
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "type": "stock",
+      "consensus_signal": "BUY",
+      "confidence": 0.7593080268858516,
+      "agent_count": 10,
+      "signal_distribution": {
+        "BUY": 5,
+        "SELL": 3,
+        "HOLD": 2
+      },
+      "reasoning": "Consensus: BUY based on 5 BUY (50.0%), 3 SELL (30.0%), 2 HOLD (20.0%)",
+      "timestamp": "2026-04-11T22:19:50.639697"
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla Inc.",
+      "type": "stock",
+      "consensus_signal": "BUY",
+      "confidence": 0.7579832804418349,
+      "agent_count": 10,
+      "signal_distribution": {
+        "BUY": 6,
+        "SELL": 1,
+        "HOLD": 3
+      },
+      "reasoning": "Consensus: BUY based on 6 BUY (60.0%), 1 SELL (10.0%), 3 HOLD (30.0%)",
+      "timestamp": "2026-04-11T22:19:50.772446"
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corporation",
+      "type": "stock",
+      "consensus_signal": "BUY",
+      "confidence": 0.7423637745279162,
+      "agent_count": 10,
+      "signal_distribution": {
+        "BUY": 7,
+        "SELL": 2,
+        "HOLD": 1
+      },
+      "reasoning": "Consensus: BUY based on 7 BUY (70.0%), 2 SELL (20.0%), 1 HOLD (10.0%)",
+      "timestamp": "2026-04-11T22:19:50.658736"
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc.",
+      "type": "stock",
+      "consensus_signal": "BUY",
+      "confidence": 0.7383601525745294,
+      "agent_count": 10,
+      "signal_distribution": {
+        "BUY": 5,
+        "SELL": 2,
+        "HOLD": 3
+      },
+      "reasoning": "Consensus: BUY based on 5 BUY (50.0%), 2 SELL (20.0%), 3 HOLD (30.0%)",
+      "timestamp": "2026-04-11T22:19:50.676886"
+    }
+  ],
+  "generated_at": "2026-04-11T22:19:51.003612",
+  "total_symbols_analyzed": 10
+}

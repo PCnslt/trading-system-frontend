@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # Trading Agents Service
+  trading-agents:
+    build:
+      context: ../infrastructure/trading-agents
+      dockerfile: Dockerfile
+    environment:
+      - PYTHONUNBUFFERED=1
+      - ALPHA_VANTAGE_API_KEY=${ALPHA_VANTAGE_API_KEY}
+      - FMP_API_KEY=${FMP_API_KEY}
+      - BACKEND_API_URL=http://backend:8082
+    volumes:
+      - ./trading-agents:/app
+      - ./data:/app/data
+    networks:
+      - trading-network
+    restart: unless-stopped
+    command: >
+      sh -c "python /app/scripts/run_daily_analysis.py &&
+             tail -f /dev/null"
+
+  # Backend API (Spring Boot)
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=simple
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:tradingdb
+    networks:
+      - trading-network
+    restart: unless-stopped
+
+  # Frontend (Angular)
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    environment:
+      - API_URL=http://backend:8082/api
+    depends_on:
+      - backend
+    networks:
+      - trading-network
+    restart: unless-stopped
+
+networks:
+  trading-network:
+    driver: bridge
+
+volumes:
+  data:
