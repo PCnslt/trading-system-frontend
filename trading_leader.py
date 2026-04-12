@@ -439,4 +439,4 @@ class TradingLeader:
             print(f"   Confidence: {final_decision.get('confidence', 0):.1%}")
             print(f"   Reasoning: {final_decision.get('reasoning', '')}")
         else:
-            print(f"\n⏸
+            print(f"\n⏸️  {final_decision.get('decision', 'NO_BUY')}")
