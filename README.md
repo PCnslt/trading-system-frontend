@@ -1,295 +1,309 @@
-# 10-Agent Trading System with Docker MCP
+# Trading Agent Monitoring System
 
-A complete trading system featuring 10 specialized AI agents, real-time monitoring dashboard, and Docker MCP (Model Context Protocol) integration.
+A comprehensive 10-agent trading system with real-time monitoring, stock analysis, and prediction capabilities.
 
 ## 🚀 Features
 
-### 🤖 **10 Specialized Trading Agents**
-- **Technical Analyst**: RSI, MACD, trend analysis
-- **Fundamental Analyst**: P/E ratios, financial metrics
-- **Sentiment Analyst**: News and social media analysis
-- **Macro Analyst**: Economic indicators and trends
-- **Crypto Analyst**: Cryptocurrency market analysis
-- **Options Analyst**: Options pricing and strategies
-- **Risk Analyst**: Portfolio risk management
-- **Quant Analyst**: Quantitative models and strategies
-- **Sector Analyst**: Industry sector analysis
-- **Compliance Analyst**: Regulatory compliance checking
+### Frontend (Angular)
+- Real-time dashboard with WebSocket connectivity
+- Agent control panel for triggering analyses
+- Leader prediction dashboard with stock/crypto recommendations
+- Stock ticker browser with 100+ symbols across categories
+- Agent status monitoring and activity logs
+- Responsive design with Bootstrap 5
 
-### 📊 **Real-time Monitoring Dashboard**
-- Angular 17+ frontend with Material Design
-- Spring Boot backend with WebSocket support
-- PostgreSQL database with JPA/Hibernate
-- Redis caching for performance
-- Real-time updates via WebSocket
+### Backend (Spring Boot)
+- REST API with 25+ endpoints
+- WebSocket support for real-time updates
+- 10 specialized trading agents:
+  - Technical Analyst (price charts, indicators)
+  - Fundamental Analyst (financials, valuation)
+  - Sentiment Analyst (news, social media)
+  - Macro Analyst (economic trends)
+  - Crypto Analyst (cryptocurrency markets)
+  - Options Analyst (derivatives, volatility)
+  - Risk Analyst (portfolio risk)
+  - Quant Analyst (statistical models)
+  - Sector Analyst (industry trends)
+  - Compliance Analyst (regulatory checks)
+- Stock ticker database with 100+ symbols
+- Environment-based configuration (no hardcoded secrets)
 
-### 🐳 **Docker MCP Integration**
-- Each agent runs as isolated Docker container
-- Unified MCP gateway for all agents
-- Resource limits (1 CPU, 2GB RAM per agent)
-- Secure secrets management
-- OAuth integration for external services
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Trading Dashboard                        │
-│                  (Angular Frontend)                         │
-└──────────────────────────┬──────────────────────────────────┘
-                           │ HTTP/WebSocket
-┌──────────────────────────▼──────────────────────────────────┐
-│              Monitoring Backend (Spring Boot)               │
-│                    Port: 8083                               │
-└──────────────────────────┬──────────────────────────────────┘
-                           │
-┌──────────────────────────▼──────────────────────────────────┐
-│                     Docker MCP Gateway                      │
-│                      Port: 8081                             │
-└─────┬────────────┬────────────┬────────────┬───────────────┘
-      │            │            │            │
-┌─────▼────┐ ┌─────▼────┐ ┌─────▼────┐ ┌─────▼────┐
-│Technical │ │Fundamental│ │Sentiment │ │  Macro   │
-│ Analyst  │ │  Analyst  │ │ Analyst  │ │ Analyst  │
-└──────────┘ └───────────┘ └──────────┘ └──────────┘
-      │            │            │            │
-┌─────▼────┐ ┌─────▼────┐ ┌─────▼────┐ ┌─────▼────┐
-│  Crypto  │ │ Options  │ │   Risk   │ │  Quant   │
-│ Analyst  │ │ Analyst  │ │ Analyst  │ │ Analyst  │
-└──────────┘ └───────────┘ └──────────┘ └──────────┘
-      │            │
-┌─────▼────┐ ┌─────▼────┐
-│ Sector   │ │Compliance│
-│ Analyst  │ │ Analyst  │
-└──────────┘ └──────────┘
-```
-
-## 🛠️ Quick Start
-
-### Prerequisites
-- Docker Desktop 4.59+ with MCP Toolkit enabled
-- Node.js 18+ and npm (for development)
-- Java 21+ (for backend development)
-- Git
-
-### 1. Clone and Setup
-```bash
-git clone <repository-url>
-cd trading-system
-cp .env.example .env
-# Edit .env with your API keys
-```
-
-### 2. Start with Docker Compose
-```bash
-# Start all services
-docker-compose -f docker-compose.mcp.yml up -d
-
-# Or start monitoring only (without MCP)
-docker-compose up -d
-```
-
-### 3. Access Applications
-- **Dashboard**: http://localhost:4200
-- **Monitoring API**: http://localhost:8083
-- **MCP Gateway**: http://localhost:8081
-- **API Documentation**: http://localhost:8083/swagger-ui.html
-
-### 4. Configure Docker MCP
-```bash
-# Install Docker MCP CLI (if not already installed)
-docker mcp --version
-
-# Create MCP profile
-docker mcp profile create --name trading-agents
-
-# Add agents to profile
-docker mcp profile server add trading-agents --server docker://technical-analyst:latest
-docker mcp profile server add trading-agents --server docker://fundamental-analyst:latest
-# ... add all 10 agents
-
-# Add secrets
-docker mcp secret add alphavantage-key
-docker mcp secret add huggingface-token
-docker mcp secret add binance-api-key
-
-# Run gateway
-docker mcp gateway run --profile trading-agents --port 8081 --transport sse
-```
-
-### 5. Connect Clients
-#### Claude Desktop
-```json
-{
-  "mcpServers": {
-    "trading-agents": {
-      "url": "http://localhost:8081/sse",
-      "transport": "sse"
-    }
-  }
-}
-```
-
-#### VS Code/Cursor
-Add to `.vscode/mcp.json`:
-```json
-{
-  "mcp": {
-    "servers": {
-      "trading-agents": {
-        "url": "http://localhost:8081/sse",
-        "transport": "sse"
-      }
-    }
-  }
-}
-```
+### Infrastructure
+- Docker Compose for easy deployment
+- Python trading agents with API integration
+- Environment variable configuration
+- Production-ready setup
 
 ## 📁 Project Structure
 
 ```
-├── backend/                 # Spring Boot monitoring backend
+trading-system/
+├── frontend/                 # Angular dashboard (port 4200)
+│   ├── src/app/components/
+│   │   ├── dashboard-home/      # Main dashboard
+│   │   ├── leader-prediction/   # Prediction dashboard
+│   │   ├── agent-control-panel/ # Agent controls
+│   │   └── ... other components
+│   └── environments/         # Environment configuration
+├── backend/                  # Spring Boot API (port 8082)
 │   ├── src/main/java/com/trading/system/
-│   │   ├── monitoring/      # Monitoring entities and repositories
-│   │   ├── controller/      # REST controllers
-│   │   ├── service/        # Business logic
-│   │   └── config/         # Configuration
-│   └── pom.xml
-│
-├── frontend/               # Angular dashboard
-│   ├── src/app/
-│   │   ├── components/     # UI components
-│   │   ├── services/       # API services
-│   │   └── models/         # TypeScript models
-│   └── package.json
-│
-├── mcp-servers/            # Docker MCP servers
-│   ├── technical-analyst/
-│   ├── fundamental-analyst/
-│   └── ... (10 agents)
-│
-├── docker-compose.yml      # Monitoring stack
-├── docker-compose.mcp.yml  # Full stack with MCP
-└── README.md
+│   │   ├── controller/       # REST controllers
+│   │   ├── model/           # Data models
+│   │   └── config/          # Configuration
+│   └── resources/           # Application config
+└── infrastructure/          # Deployment & agents
+    ├── trading-agents/      # Python trading agents
+    ├── docker-compose.yml   # Docker setup
+    └── requirements.txt     # Python dependencies
 ```
 
-## 🔧 API Endpoints
+## 🛠️ Setup & Installation
 
-### Monitoring Backend (Port 8083)
-```
-GET    /api/monitoring/health          # System health
-GET    /api/monitoring/stats           # System statistics
-GET    /api/monitoring/agents/status   # Agent statuses
+### Prerequisites
+- Java 17+
+- Node.js 18+
+- Python 3.11+
+- Docker & Docker Compose (optional)
 
-POST   /api/agent-activities           # Log agent activity
-GET    /api/agent-activities           # Get activities
-
-POST   /api/chat                       # Send chat message
-GET    /api/chat                       # Get chat history
-
-POST   /api/consensus                  # Submit consensus vote
-GET    /api/consensus                  # Get consensus votes
-GET    /api/consensus/latest           # Latest consensus
-
-POST   /api/trade-recommendations      # Create recommendation
-GET    /api/trade-recommendations      # Get recommendations
-GET    /api/trade-recommendations/active # Active recommendations
-```
-
-### WebSocket Endpoints
-```
-/ws-monitoring                    # WebSocket connection
-/topic/agent-activities           # Real-time activities
-/topic/chat                       # Real-time chat
-/topic/consensus                  # Real-time consensus
-/topic/trade-recommendations      # Real-time recommendations
-```
-
-## 🤝 Integration with OpenClaw
-
-### Send Agent Activities
+### 1. Backend Setup
 ```bash
-# Example: Send agent activity via curl
-curl -X POST http://localhost:8083/api/agent-activities \
-  -H "Content-Type: application/json" \
-  -d '{
-    "agentId": "technical_analyst",
-    "task": "RSI Analysis",
-    "activityType": "analysis",
-    "inputData": "{\"symbol\": \"AAPL\", \"period\": 14}",
-    "outputData": "{\"rsi\": 65.5, \"signal\": \"NEUTRAL\"}",
-    "reasoning": "RSI indicates neutral market conditions",
-    "status": "success",
-    "symbol": "AAPL"
-  }'
+cd backend
+
+# Copy environment template
+cp .env.example .env
+# Edit .env with your API keys
+
+# Build and run
+mvn clean package
+java -jar target/trading-system-1.0.0.jar
 ```
 
-### OpenClaw Skill Configuration
-Create a skill that posts to the monitoring backend:
-```yaml
-# skills/trading-monitoring/skill.yaml
-name: trading-monitoring
-description: Post trading agent activities to monitoring system
-tools:
-  - name: post_agent_activity
-    description: Post agent activity to monitoring backend
-    parameters:
-      agentId: string
-      task: string
-      # ... other parameters
+### 2. Frontend Setup
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+ng serve
+```
+
+### 3. Infrastructure Setup
+```bash
+cd infrastructure/trading-agents
+
+# Copy environment template
+cp .env.example .env
+# Edit .env with your API keys
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Run trading agents
+python generate_recommendation.py
+```
+
+### 4. Docker Deployment (Optional)
+```bash
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+#### Backend (.env)
+```env
+DB_URL=jdbc:mysql://localhost:3306/trading_db
+DB_USERNAME=root
+DB_PASSWORD=your_password
+ALPHA_VANTAGE_API_KEY=your_key_here
+FMP_API_KEY=your_key_here
+```
+
+#### Frontend (environment.ts)
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8082/api',
+  wsUrl: 'http://localhost:8082/ws-monitoring'
+};
+```
+
+#### Trading Agents (.env)
+```env
+ALPHA_VANTAGE_API_KEY=your_key_here
+FMP_API_KEY=your_key_here
+NEWS_API_KEY=your_key_here
+BACKEND_URL=http://localhost:8082
+```
+
+## 📊 Available Stock Tickers
+
+The system includes 100+ tickers across categories:
+
+### Major US Stocks (50)
+- **Technology**: AAPL, MSFT, GOOGL, AMZN, TSLA, NVDA, META, ADBE, NFLX, CRM
+- **Financial**: JPM, BAC, WFC, C, GS, MS, V, MA, PYPL, SQ
+- **Healthcare**: JNJ, UNH, PFE, ABT, TMO, MRK, BMY, LLY, AMGN, GILD
+- **Industrial**: CAT, BA, MMM, GE, HON, UPS, RTX, DE, LMT, GD
+
+### Cryptocurrencies (20)
+- BTC, ETH, BNB, XRP, SOL, ADA, AVAX, DOT, DOGE, SHIB, MATIC, TRX, LTC, UNI, LINK, ATOM, ETC, XLM, ICP, FIL
+
+### ETFs (20)
+- SPY, QQQ, DIA, IWM, VTI, VOO, IVV, VEA, VWO, BND, AGG, LQD, HYG, GLD, SLV, USO, TLT, IEF, SHY, MUB
+
+## 🔌 API Endpoints
+
+### Stock Tickers
+- `GET /api/tickers/all` - Get all tickers
+- `GET /api/tickers/categories` - Get tickers by category
+- `GET /api/tickers/category/{category}` - Get tickers for specific category
+- `GET /api/tickers/info/{ticker}` - Get ticker information
+- `GET /api/tickers/stats` - Get ticker statistics
+
+### Trading Recommendations
+- `POST /api/trading/generate-recommendation` - Generate trading recommendation
+- `GET /api/trading/recommendation/{ticker}` - Get recommendation for ticker
+- `GET /api/trading/agent-analysis/{ticker}` - Get agent analysis for ticker
+- `GET /api/trading/recent-recommendations` - Get recent recommendations
+
+### Agent Control
+- `POST /api/trigger/{agent}/{symbol}` - Trigger specific agent
+- `POST /api/trigger/all/{symbol}` - Trigger all agents
+- `GET /api/trigger/agents` - Get all agents
+- `GET /api/trigger/status/{agent}` - Get agent status
+
+### System Health
+- `GET /api/health` - System health check
+- `GET /ws-monitoring` - WebSocket endpoint
+
+## 🎯 Usage Examples
+
+### 1. Generate Trading Recommendation
+```bash
+# Using curl
+curl -X POST http://localhost:8082/api/trading/generate-recommendation \
+  -H "Content-Type: application/json" \
+  -d '{"category": "all"}'
+
+# Using frontend
+# Click "Generate Prediction" in Leader Prediction Dashboard
+```
+
+### 2. Trigger Agent Analysis
+```bash
+# Trigger technical analyst for AAPL
+curl -X POST http://localhost:8082/api/trigger/technical/AAPL
+
+# Trigger all agents for TSLA
+curl -X POST http://localhost:8082/api/trigger/all/TSLA
+```
+
+### 3. Get Stock Ticker Information
+```bash
+# Get all tickers
+curl http://localhost:8082/api/tickers/all
+
+# Get ticker info for AAPL
+curl http://localhost:8082/api/tickers/info/AAPL
+```
+
+## 🧪 Testing
+
+### Backend Tests
+```bash
+cd backend
+mvn test
+```
+
+### Frontend Tests
+```bash
+cd frontend
+npm test
+```
+
+### Trading Agent Tests
+```bash
+cd infrastructure/trading-agents
+python test_system_simple.py
 ```
 
 ## 🔒 Security
 
-- **API Keys**: Stored in Docker MCP secrets, never in code
-- **Container Isolation**: Each agent runs in isolated container with resource limits
-- **Network Security**: Internal Docker network, only gateway exposed
-- **Authentication**: JWT tokens for API access (optional)
-- **Rate Limiting**: Implemented at gateway level
+- **No hardcoded secrets**: All API keys use environment variables
+- **CORS configured**: Only allowed origins can access API
+- **Input validation**: All endpoints validate input data
+- **Git security**: .gitignore excludes sensitive files
+- **Docker security**: Non-root users in containers
 
-## 📈 Monitoring & Logging
+## 📈 Monitoring
 
-- **Application Logs**: Structured JSON logging
-- **Metrics**: Prometheus metrics endpoint at `/actuator/prometheus`
-- **Health Checks**: Docker health checks and Spring Boot Actuator
-- **Tracing**: Distributed tracing with OpenTelemetry
+### Dashboard Features
+- Real-time agent status
+- WebSocket connection monitoring
+- Activity logs with timestamps
+- Confidence scores and signal distribution
+- Recent prediction history
+
+### Access Points
+- Frontend: http://localhost:4200
+- Backend API: http://localhost:8082/api/health
+- WebSocket: ws://localhost:8082/ws-monitoring
 
 ## 🚢 Deployment
 
 ### Production Deployment
+1. Set `production: true` in frontend environment
+2. Configure production database in backend .env
+3. Use Docker Compose for containerized deployment
+4. Set up reverse proxy (Nginx/Apache)
+5. Configure SSL certificates
+
+### Docker Deployment
 ```bash
-# Build and push images
-docker-compose -f docker-compose.mcp.yml build
-docker-compose -f docker-compose.mcp.yml push
+# Build and deploy
+docker-compose build
+docker-compose up -d
 
-# Deploy to Kubernetes
-kubectl apply -f kubernetes/
+# Monitor logs
+docker-compose logs -f trading-backend
+docker-compose logs -f trading-frontend
 ```
-
-### Environment Variables
-See `.env.example` for required environment variables. In production:
-- Use Docker secrets or HashiCorp Vault
-- Rotate API keys regularly
-- Enable TLS/SSL for all endpoints
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Commit changes
-4. Push to branch
-5. Create Pull Request
+4. Push to the branch
+5. Create a Pull Request
 
 ## 📄 License
 
-MIT License - see LICENSE file for details.
+MIT License - see LICENSE file for details
 
-## 🆘 Support
+## 🙏 Acknowledgments
 
-- Issues: GitHub Issues
-- Documentation: [docs.openclaw.ai](https://docs.openclaw.ai)
-- Community: [Discord](https://discord.gg/clawd)
+- Alpha Vantage for financial data API
+- Financial Modeling Prep for fundamental data
+- Spring Boot and Angular teams
+- All open-source contributors
+
+## 📞 Support
+
+For issues and questions:
+1. Check the [Issues](https://github.com/yourusername/trading-system/issues) page
+2. Create a new issue with detailed description
+3. Include logs and reproduction steps
 
 ---
 
-**Built with ❤️ by OpenClaw AI**
+**Happy Trading!** 📈🚀
