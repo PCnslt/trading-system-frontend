@@ -1,0 +1,40 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartConfiguration, ChartType } from 'chart.js';
+
+interface PortfolioPosition {
+  symbol: string;
+  name: string;
+  quantity: number;
+  avgPrice: number;
+  currentPrice: number;
+  pnl: number;
+  pnlPercent: number;
+  value: number;
+  agentSignal: string;
+  signalConfidence: number;
+  sector: string;
+}
+
+interface TradingSignal {
+  symbol: string;
+  agent: string;
+  signal: string;
+  confidence: number;
+  timestamp: string;
+  reasoning: string;
+}
+
+@Component({
+  selector: 'app-portfolio-page',
+  standalone: true,
+  imports: [CommonModule, FormsModule, BaseChartDirective],
+  template: `
+    <div class="container-fluid py-4">
+      <!-- Page Header -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card shadow-lg border-0">
+            <div class="card-body text-center">

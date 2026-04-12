@@ -1,0 +1,142 @@
+
+> trading-monitoring-dashboard@1.0.0 start
+> ng serve
+
+
+Initial chunk files   | Names         |  Raw size
+vendor.js             | vendor        |   3.65 MB | 
+polyfills.js          | polyfills     | 262.60 kB | 
+styles.css, styles.js | styles        | 241.54 kB | 
+main.js               | main          |  94.25 kB | 
+runtime.js            | runtime       |   6.53 kB | 
+
+                      | Initial total |   4.24 MB
+
+Build at: 2026-04-01T23:38:34.501Z - Hash: 14ad470aed0f4c0f - Time: 21056ms
+
+** Angular Live Development Server is listening on localhost:4200, open your browser on http://localhost:4200/ **
+
+
+× Failed to compile.
+
+
+
+5 unchanged chunks
+
+Build at: 2026-04-01T23:38:35.904Z - Hash: 14ad470aed0f4c0f - Time: 1163ms
+
+× Failed to compile.
+
+Initial chunk files | Names   | Raw size
+main.js             | main    | 94.25 kB | 
+runtime.js          | runtime |  6.53 kB | 
+
+3 unchanged chunks
+
+Build at: 2026-04-01T23:39:43.788Z - Hash: 3b6d77a0fab8f196 - Time: 1535ms
+
+× Failed to compile.
+
+Initial chunk files | Names   | Raw size
+main.js             | main    | 94.35 kB | 
+runtime.js          | runtime |  6.53 kB | 
+
+3 unchanged chunks
+
+Build at: 2026-04-01T23:39:50.190Z - Hash: a4b4fd386abc1aba - Time: 582ms
+
+× Failed to compile.
+
+Initial chunk files | Names   | Raw size
+main.js             | main    | 94.35 kB | 
+runtime.js          | runtime |  6.53 kB | 
+
+3 unchanged chunks
+
+Build at: 2026-04-01T23:40:47.822Z - Hash: 9291e3303a6a4853 - Time: 554ms
+
+× Failed to compile.
+
+Initial chunk files | Names   | Raw size
+main.js             | main    | 94.35 kB | 
+runtime.js          | runtime |  6.53 kB | 
+
+3 unchanged chunks
+
+Build at: 2026-04-01T23:41:13.649Z - Hash: 3c252b7c887eb2c5 - Time: 466ms
+
+× Failed to compile.
+
+Initial chunk files | Names   | Raw size
+main.js             | main    | 94.35 kB | 
+runtime.js          | runtime |  6.53 kB | 
+
+3 unchanged chunks
+
+Build at: 2026-04-01T23:42:10.164Z - Hash: 3411899230c64428 - Time: 471ms
+
+× Failed to compile.
+
+
+
+5 unchanged chunks
+
+Build at: 2026-04-01T23:42:47.493Z - Hash: 3411899230c64428 - Time: 476ms
+
+× Failed to compile.
+
+Initial chunk files | Names   | Raw size
+vendor.js           | vendor  |  3.72 MB | 
+main.js             | main    | 94.39 kB | 
+runtime.js          | runtime |  6.55 kB | 
+
+2 unchanged chunks
+
+Build at: 2026-04-01T23:42:48.910Z - Hash: 339ceafe6ef0021d - Time: 845ms
+
+× Failed to compile.
+
+Initial chunk files | Names   | Raw size
+vendor.js           | vendor  |  3.87 MB | 
+main.js             | main    | 94.44 kB | 
+runtime.js          | runtime |  6.55 kB | 
+
+2 unchanged chunks
+
+Build at: 2026-04-01T23:42:52.676Z - Hash: 9b243bfdc7d0fcbb - Time: 1226ms
+
+× Failed to compile.
+
+Initial chunk files | Names   | Raw size
+runtime.js          | runtime |  6.55 kB | 
+
+4 unchanged chunks
+
+Build at: 2026-04-01T23:42:53.134Z - Hash: 2d831f24c7614c99 - Time: 405ms
+
+× Failed to compile.
+
+Initial chunk files | Names   | Raw size
+runtime.js          | runtime |  6.55 kB | 
+
+4 unchanged chunks
+
+Build at: 2026-04-01T23:43:03.865Z - Hash: a348bb088b6f39f1 - Time: 3480ms
+
+× Failed to compile.
+
+
+
+5 unchanged chunks
+
+Build at: 2026-04-01T23:43:05.549Z - Hash: a348bb088b6f39f1 - Time: 1619ms
+
+× Failed to compile.
+
+
+
+5 unchanged chunks
+
+Build at: 2026-04-01T23:43:15.930Z - Hash: a348bb088b6f39f1 - Time: 699ms
+
+× Failed to compile.

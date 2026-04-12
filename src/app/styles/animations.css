@@ -1,0 +1,277 @@
+/* Modern Animations for Trading Dashboard */
+
+/* Fade In */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* Slide In */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-up {
+  animation: slideInUp 0.4s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+/* Pulse Animation for Active Elements */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+.pulse-once {
+  animation: pulse 0.5s ease-in-out;
+}
+
+/* Glow Effect for Important Items */
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px currentColor; }
+  50% { box-shadow: 0 0 20px currentColor; }
+}
+
+.glow {
+  animation: glow 2s infinite;
+}
+
+/* Bounce for Notifications */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+.bounce {
+  animation: bounce 1s;
+}
+
+/* Shake for Errors */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+  animation: shake 0.5s;
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Rotate for Loading */
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.rotate {
+  animation: rotate 1s linear infinite;
+}
+
+/* Card Hover Effects */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Hover Effects */
+.btn-hover {
+  transition: all 0.2s ease;
+}
+
+.btn-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Agent Avatar Animations */
+.agent-avatar {
+  transition: all 0.3s ease;
+  border: 3px solid transparent;
+}
+
+.agent-avatar:hover {
+  transform: scale(1.1);
+  border-color: currentColor;
+}
+
+.agent-avatar.active {
+  animation: pulse 2s infinite;
+}
+
+/* Status Indicator */
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.status-indicator.active {
+  background-color: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  animation: pulse 2s infinite;
+}
+
+.status-indicator.inactive {
+  background-color: #ef4444;
+}
+
+.status-indicator.processing {
+  background-color: #f59e0b;
+  animation: pulse 1s infinite;
+}
+
+/* Chart Animation */
+.chart-container {
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Table Row Animation */
+.table-row-animate {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+/* Notification Badge */
+.notification-badge {
+  animation: bounce 0.5s, pulse 2s infinite;
+}
+
+/* Progress Bar Animation */
+.progress-bar-animated {
+  transition: width 0.6s ease;
+}
+
+/* Typewriter Effect */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typewriter 2s steps(40, end);
+}
+
+/* Gradient Background Animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-animated {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Glass Morphism Effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Staggered Children Animation */
+.stagger-children > * {
+  opacity: 0;
+  animation: slideInUp 0.5s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.7s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.8s; }
+.stagger-children > *:nth-child(9) { animation-delay: 0.9s; }
+.stagger-children > *:nth-child(10) { animation-delay: 1s; }
+
+/* Trading Signal Animations */
+.signal-buy {
+  animation: pulse 2s infinite, glow 3s infinite;
+  color: #10b981;
+}
+
+.signal-sell {
+  animation: pulse 2s infinite;
+  color: #ef4444;
+}
+
+.signal-hold {
+  animation: pulse 3s infinite;
+  color: #f59e0b;
+}
+
+/* Real-time Data Update Flash */
+@keyframes dataUpdate {
+  0% { background-color: transparent; }
+  50% { background-color: rgba(59, 130, 246, 0.2); }
+  100% { background-color: transparent; }
+}
+
+.data-updated {
+  animation: dataUpdate 1s ease;
+}
+
+/* Loading Skeleton Animation */
+@keyframes skeletonLoading {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: skeletonLoading 1.5s infinite;
+}
