@@ -1,0 +1,11 @@
+name: technical-analyst
+type: server
+title: Technical Analyst
+description: MCP server for technical analysis tools (RSI, MACD, trends)
+image: workspace-technical-analyst:latest
+env:
+  - name: ALPHA_VANTAGE_KEY
+    value: ${DOCKER_MCP_SECRET_ALPHA_VANTAGE_KEY}
+allowHosts:
+  - "*.alphavantage.co:443"
+  - "*.yahoo.com:443"

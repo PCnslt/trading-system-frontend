@@ -29,9 +29,11 @@ class Config(BaseSettings):
     
     # Ollama
     ollama_url: str = Field(default="http://localhost:11434", env="OLLAMA_URL")
-    ollama_timeout: int = Field(default=30)
+    ollama_timeout: int = Field(default=300)
     embedding_model: str = Field(default="nomic-embed-text", env="EMBEDDING_MODEL")
-    generation_model: str = Field(default="llama3.2:3b", env="GENERATION_MODEL")
+    generation_model: str = Field(default="deepseek/deepseek-chat", env="GENERATION_MODEL")
+    deepseek_api_key: str = Field(default="", env="DEEPSEEK_API_KEY")
+    deepseek_base_url: str = Field(default="https://api.deepseek.com", env="DEEPSEEK_BASE_URL")
     embedding_dimension: int = Field(default=768)
     
     # Search

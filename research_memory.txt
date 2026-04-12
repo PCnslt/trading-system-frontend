@@ -1,0 +1,11 @@
+Research AI agent memory systems. Provide a comprehensive overview of current (2026) approaches, including:
+1. Vector databases for long-term memory (Pinecone, Qdrant, Weaviate)
+2. Episodic vs semantic vs procedural memory
+3. Memory-augmented neural networks
+4. Retrieval-augmented generation (RAG) for agents
+5. Memory management techniques (pruning, consolidation, retrieval)
+6. Market trends and key players
+7. Technical challenges and solutions
+8. Impact on AI agent capabilities
+
+Focus on recent advances (2025-2026). Be concise but thorough. Format with clear sections.

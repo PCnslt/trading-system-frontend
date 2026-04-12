@@ -53,7 +53,7 @@ services:
       DATABASE_URL: postgresql://memory_user:memory_password@postgres:5432/memory_system
       OLLAMA_URL: http://ollama:11434
       EMBEDDING_MODEL: nomic-embed-text
-      GENERATION_MODEL: llama3.2:3b
+      GENERATION_MODEL: qwen2.5:0.5b
       LOG_LEVEL: INFO
       API_DEBUG: "false"
     ports:

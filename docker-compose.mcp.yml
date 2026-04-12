@@ -1,0 +1,256 @@
+
+
+services:
+  # MCP Gateway
+  mcp-gateway:
+    image: docker/mcp-gateway:latest
+    command: ["--catalog", "file:///root/.docker/mcp/catalog.yaml", "--servers", "technical-analyst", "--servers", "fundamental-analyst", "--servers", "sentiment-analyst", "--servers", "macro-analyst", "--servers", "crypto-analyst", "--servers", "options-analyst", "--servers", "risk-analyst", "--servers", "quant-analyst", "--servers", "sector-analyst", "--servers", "compliance-analyst", "--transport", "sse", "--port", "8080", "--verbose", "--log-calls"]
+    ports:
+      - "8081:8080"
+    environment:
+      - DOCKER_MCP_SECRET_ALPHA_VANTAGE_KEY=${ALPHA_VANTAGE_KEY}
+      - DOCKER_MCP_SECRET_FMP_API_KEY=${FMP_API_KEY}
+      - DOCKER_MCP_SECRET_NEWSAPI_KEY=${NEWSAPI_KEY}
+      - DOCKER_MCP_SECRET_TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
+      - DOCKER_MCP_SECRET_COINMARKETCAP_API_KEY=${COINMARKETCAP_API_KEY}
+      - DOCKER_MCP_SECRET_BINANCE_API_KEY=${BINANCE_API_KEY}
+      - DOCKER_MCP_SECRET_OPTIONS_DATA_API_KEY=${OPTIONS_DATA_API_KEY}
+      - DOCKER_MCP_SECRET_RISK_MODEL_API_KEY=${RISK_MODEL_API_KEY}
+      - DOCKER_MCP_SECRET_QUANT_MODEL_API_KEY=${QUANT_MODEL_API_KEY}
+      - DOCKER_MCP_SECRET_REGULATORY_API_KEY=${REGULATORY_API_KEY}
+      - DOCKER_MCP_SECRET_SECTOR_DATA_API_KEY=${SECTOR_DATA_API_KEY}
+      - DOCKER_MCP_SECRET_FRED_API_KEY=${FRED_API_KEY}
+      - DOCKER_MCP_SECRET_OECD_API_KEY=${OECD_API_KEY}
+      - DOCKER_MCP_SECRET_HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
+      - DOCKER_MCP_SECRET_OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./mcp-profiles:/root/.docker/mcp
+      - /var/run/docker.sock:/var/run/docker.sock
+
+    networks:
+      - mcp-network
+
+  # Technical Analyst MCP Server
+  technical-analyst:
+    build: ./mcp-servers/technical-analyst
+    environment:
+      - ALPHA_VANTAGE_KEY=${ALPHA_VANTAGE_KEY}
+    restart: "no"
+    volumes:
+      - ./data/technical:/app/data
+    networks:
+      - mcp-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+  # Fundamental Analyst MCP Server
+  fundamental-analyst:
+    build: ./mcp-servers/fundamental-analyst
+    environment:
+      - ALPHA_VANTAGE_KEY=${ALPHA_VANTAGE_KEY}
+      - FMP_API_KEY=${FMP_API_KEY}
+    restart: "no"
+    volumes:
+      - ./data/fundamental:/app/data
+    networks:
+      - mcp-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+
+  # Sentiment Analyst MCP Server
+  sentiment-analyst:
+    build: ./mcp-servers/sentiment-analyst
+    environment:
+      - NEWSAPI_KEY=${NEWSAPI_KEY}
+      - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
+      - HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
+    restart: "no"
+    volumes:
+      - ./data/sentiment:/app/data
+    networks:
+      - mcp-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+  # Macro Analyst MCP Server
+  macro-analyst:
+    build: ./mcp-servers/macro-analyst
+    environment:
+      - FRED_API_KEY=${FRED_API_KEY}
+      - OECD_API_KEY=${OECD_API_KEY}
+    restart: "no"
+    volumes:
+      - ./data/macro:/app/data
+    networks:
+      - mcp-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+
+  # Crypto Analyst MCP Server
+  crypto-analyst:
+    build: ./mcp-servers/crypto-analyst
+    environment:
+      - COINMARKETCAP_API_KEY=${COINMARKETCAP_API_KEY}
+      - BINANCE_API_KEY=${BINANCE_API_KEY}
+    restart: "no"
+    volumes:
+      - ./data/crypto:/app/data
+    networks:
+      - mcp-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+
+  # Options Analyst MCP Server
+  options-analyst:
+    build: ./mcp-servers/options-analyst
+    environment:
+      - OPTIONS_DATA_API_KEY=${OPTIONS_DATA_API_KEY}
+    restart: "no"
+    volumes:
+      - ./data/options:/app/data
+    networks:
+      - mcp-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+
+  # Risk Analyst MCP Server
+  risk-analyst:
+    build: ./mcp-servers/risk-analyst
+    environment:
+      - RISK_MODEL_API_KEY=${RISK_MODEL_API_KEY}
+    restart: "no"
+    volumes:
+      - ./data/risk:/app/data
+      - ./portfolio-data:/app/portfolio
+    networks:
+      - mcp-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+
+  # Quant Analyst MCP Server
+  quant-analyst:
+    build: ./mcp-servers/quant-analyst
+    environment:
+      - QUANT_MODEL_API_KEY=${QUANT_MODEL_API_KEY}
+    restart: "no"
+    volumes:
+      - ./data/quant:/app/data
+    networks:
+      - mcp-network
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+
+  # Sector Analyst MCP Server
+  sector-analyst:
+    build: ./mcp-servers/sector-analyst
+    environment:
+      - SECTOR_DATA_API_KEY=${SECTOR_DATA_API_KEY}
+    restart: "no"
+    volumes:
+      - ./data/sector:/app/data
+    networks:
+      - mcp-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+
+  # Compliance Analyst MCP Server
+  compliance-analyst:
+    build: ./mcp-servers/compliance-analyst
+    environment:
+      - REGULATORY_API_KEY=${REGULATORY_API_KEY}
+    restart: "no"
+    volumes:
+      - ./data/compliance:/app/data
+      - ./regulations:/app/regulations
+    networks:
+      - mcp-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+
+  # Monitoring Backend (Spring Boot)
+  monitoring-backend:
+    build: ./backend
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/trading_monitoring
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_REDIS_HOST=redis
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - mcp-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=trading_monitoring
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - mcp-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    networks:
+      - mcp-network
+
+  # Frontend (Angular)
+  frontend:
+    build: ./frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - monitoring-backend
+    networks:
+      - mcp-network
+
+networks:
+  mcp-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  portfolio-data:

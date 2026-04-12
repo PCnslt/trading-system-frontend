@@ -1,0 +1,52 @@
+# Dockerfile for Trading Agents
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install TA-Lib (technical analysis library)
+RUN wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz \
+    && tar -xzf ta-lib-0.4.0-src.tar.gz \
+    && cd ta-lib \
+    && ./configure --prefix=/usr \
+    && make \
+    && make install \
+    && cd .. \
+    && rm -rf ta-lib ta-lib-0.4.0-src.tar.gz
+
+# Install Python TA-Lib wrapper
+RUN pip install TA-Lib
+
+# Copy agent code
+COPY agents/ ./agents/
+COPY scripts/ ./scripts/
+COPY data/ ./data/
+
+# Create necessary directories
+RUN mkdir -p /app/data/daily_reports \
+    /app/data/agent_results \
+    /app/data/performance \
+    /app/logs
+
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import sys; sys.exit(0)"
+
+# Default command (can be overridden)
+CMD ["python", "/app/scripts/run_daily_analysis.py"]

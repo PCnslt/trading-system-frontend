@@ -19,7 +19,7 @@ $HumanizerRules = @{
         @{ from = "Kindly"; to = "" }
     )
     Tone = "friendly" # friendly, professional, concise
-    EmojiFrequency = "low" # none, low, medium, high
+    EmojiFrequency = "none" # none, low, medium, high
     UseContractions = $true
 }
 
@@ -44,7 +44,7 @@ function Invoke-Humanizer {
         
         [Parameter()]
         [ValidateSet("none", "low", "medium", "high")]
-        [string]$EmojiFrequency = "low"
+        [string]$EmojiFrequency = "none"
     )
     
     # Apply replacements
@@ -101,9 +101,9 @@ function Invoke-Humanizer {
     # Add emoji based on frequency
     if ($EmojiFrequency -ne "none") {
         $emojiMap = @{
-            "!" = @("😊", "👍", "✨")
-            "." = @("😌", "🤔", "📝")
-            "?" = @("🤔", "❓", "💭")
+            "!" = @("", "", "")
+            "." = @("", "", "")
+            "?" = @("", "", "")
         }
         
         $addEmoji = $false

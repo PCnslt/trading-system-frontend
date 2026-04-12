@@ -1,0 +1,17 @@
+You are a strategic AI researcher. Based on current knowledge (as of April 2026), analyze long-term AI trends for the next 5 years (2026-2031). Consider:
+
+1. **Market Growth**: Projections for AI market size, AGI timeline, autonomous agents adoption.
+2. **Technology Shifts**: Key breakthroughs expected (multimodal AI, edge AI, physical AI, AI cybersecurity, AIOps).
+3. **Regulatory Landscape**: EU AI Act enforcement (August 2026), US state laws, global compliance.
+4. **Industry Adoption**: Which sectors will see fastest AI integration? (healthcare, finance, manufacturing, etc.)
+5. **AI Agent Evolution**: Trends in multi-agent systems, self-improving AI, HyperAgents, metacognitive capabilities.
+
+Provide a concise analysis with bullet points, focusing on implications for AI agent developers and businesses. Use data where possible.
+
+Current context from our system:
+- We have 30 skills installed but only 23% utilization.
+- We use free local models (Ollama) with 96% cache hit.
+- We are building autonomous trading agents and memory systems.
+- Our target is AGI readiness and regulatory compliance.
+
+Please output in structured markdown.
