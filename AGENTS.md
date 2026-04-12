@@ -45,6 +45,36 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - When you make a mistake → document it so future-you doesn't repeat it
 - **Text > Brain** 📝
 
+### 🧠 Memory Skill Integration (2026-04-12)
+
+**New memory skills installed:**
+1. **capability-evolver-pro** - Meta-skill for self-improvement (analyze logs, detect patterns)
+2. **elite-longterm-memory** - 5-layer memory system (HOT/WARM/COLD/Archive/Cloud)
+3. **memory-tiering** - Automated multi-tiered memory management
+4. **self-improving** - Self-reflection + self-criticism + self-learning
+5. **byterover** - Knowledge management for AI agents (query before work)
+
+**Memory Workflow Rules:**
+1. **Before tasks**: Use `brv query` to check existing knowledge
+2. **After learning**: Use `brv curate` to save new patterns/decisions  
+3. **Weekly evolution**: Run capability-evolver every Sunday 9:00 AM
+4. **Daily memory**: Update SESSION-STATE.md before responding (WAL protocol)
+5. **Corrections**: Log to self-improving/corrections.md when user corrects you
+6. **Self-reflection**: Evaluate work after completion, log improvements
+
+**Session Startup Enhanced:**
+1. Read `SOUL.md` — this is who you are
+2. Read `USER.md` — this is who you're helping  
+3. Read `SESSION-STATE.md` — active working memory (survives compaction)
+4. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
+5. **If in MAIN SESSION**: Also read `MEMORY.md` and `self-improving/memory.md`
+6. **ByteRover query**: `brv query "relevant context for today's work"`
+
+**Write-Ahead Log (WAL) Protocol:**
+- Write to SESSION-STATE.md BEFORE responding, not after
+- Critical for: preferences, decisions, deadlines, corrections
+- Prevents context loss if crash/compaction happens before saving
+
 ## Red Lines
 
 - Don't exfiltrate private data. Ever.
