@@ -566,3 +566,86 @@ body {
     color: black !important;
   }
 }
+/* ==================== */
+/* TABLE STYLES - FIX FOR DARK THEME */
+/* ==================== */
+
+/* Fix for table-dark in dark theme */
+.table-dark {
+  --bs-table-bg: var(--bg-card) !important;
+  --bs-table-striped-bg: var(--bg-hover) !important;
+  --bs-table-striped-color: var(--text-primary) !important;
+  --bs-table-active-bg: var(--bg-hover) !important;
+  --bs-table-active-color: var(--text-primary) !important;
+  --bs-table-hover-bg: var(--bg-hover) !important;
+  --bs-table-hover-color: var(--text-primary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+.table-dark th {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+  font-weight: 600;
+  color: var(--text-primary) !important;
+}
+
+.table-dark td {
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.table-dark tbody tr {
+  background-color: var(--bg-card) !important;
+}
+
+.table-dark tbody tr:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+/* Specific fixes for dashboard tables */
+.table.table-hover.table-dark tbody tr:hover {
+  background-color: var(--bg-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Fix for table-success, table-primary, etc. in dark theme */
+.table-success {
+  --bs-table-bg: rgba(0, 214, 143, 0.2) !important;
+  --bs-table-color: var(--text-primary) !important;
+  border-color: rgba(0, 214, 143, 0.3) !important;
+}
+
+.table-primary {
+  --bs-table-bg: rgba(51, 102, 255, 0.2) !important;
+  --bs-table-color: var(--text-primary) !important;
+  border-color: rgba(51, 102, 255, 0.3) !important;
+}
+
+.table-secondary {
+  --bs-table-bg: rgba(143, 155, 179, 0.2) !important;
+  --bs-table-color: var(--text-primary) !important;
+  border-color: rgba(143, 155, 179, 0.3) !important;
+}
+
+.table-danger {
+  --bs-table-bg: rgba(255, 61, 113, 0.2) !important;
+  --bs-table-color: var(--text-primary) !important;
+  border-color: rgba(255, 61, 113, 0.3) !important;
+}
+
+/* Ensure table headers are always visible */
+.table-dark thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Fix for table-responsive containers */
+.table-responsive {
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+

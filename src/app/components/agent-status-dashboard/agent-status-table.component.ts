@@ -10,19 +10,19 @@ import { FormsModule } from '@angular/forms';
   template: `
     <div class="agent-status-table">
       <!-- Table Header with Controls -->
-      <div class="card mb-3">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">📊 Agent Status Table</h5>
+      <div class="card mb-3 bg-dark text-white">
+        <div class="card-header bg-secondary d-flex justify-content-between align-items-center">
+          <h5 class="mb-0 text-white">📊 Agent Status Table</h5>
           <div class="d-flex align-items-center gap-2">
             <div class="input-group input-group-sm" style="width: 200px;">
               <span class="input-group-text bg-dark border-dark">
                 <i class="bi bi-search"></i>
               </span>
-              <input type="text" class="form-control form-control-sm bg-dark border-dark" 
+              <input type="text" class="form-control form-control-sm bg-dark border-dark text-white" 
                      placeholder="Search agents..." [(ngModel)]="searchTerm" 
                      (ngModelChange)="filterAgents()">
             </div>
-            <button class="btn btn-sm btn-outline-primary" (click)="refreshStatus()" [disabled]="isRefreshing">
+            <button class="btn btn-sm btn-outline-light" (click)="refreshStatus()" [disabled]="isRefreshing">
               <i class="bi bi-arrow-clockwise" [class.spin]="isRefreshing"></i>
               Refresh
             </button>
@@ -30,24 +30,24 @@ import { FormsModule } from '@angular/forms';
         </div>
         
         <!-- Stats Summary -->
-        <div class="card-body py-2">
+        <div class="card-body py-2 bg-dark">
           <div class="row g-3">
             <div class="col-md-3">
               <div class="text-center p-2 rounded bg-success bg-opacity-10">
                 <div class="h4 mb-0 text-success">{{activeAgentCount}}</div>
-                <div class="small text-muted">Active Agents</div>
+                <div class="small text-white-75">Active Agents</div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="text-center p-2 rounded bg-primary bg-opacity-10">
                 <div class="h4 mb-0 text-primary">{{totalSuccessCount}}</div>
-                <div class="small text-muted">Total Success</div>
+                <div class="small text-white-75">Total Success</div>
               </div>
             </div>
             <div class="col-md-3">
               <div class="text-center p-2 rounded bg-danger bg-opacity-10">
                 <div class="h4 mb-0 text-danger">{{totalErrorCount}}</div>
-                <div class="small text-muted">Total Errors</div>
+                <div class="small text-white-75">Total Errors</div>
               </div>
             </div>
             <div class="col-md-3">
@@ -55,7 +55,7 @@ import { FormsModule } from '@angular/forms';
                 <div class="h4 mb-0" [ngClass]="overallSuccessRate >= 80 ? 'text-success' : overallSuccessRate >= 60 ? 'text-warning' : 'text-danger'">
                   {{overallSuccessRate.toFixed(1)}}%
                 </div>
-                <div class="small text-muted">Overall Success Rate</div>
+                <div class="small text-white-75">Overall Success Rate</div>
               </div>
             </div>
           </div>
@@ -63,8 +63,8 @@ import { FormsModule } from '@angular/forms';
       </div>
 
       <!-- Agent Status Table -->
-      <div class="card">
-        <div class="card-body p-0">
+      <div class="card bg-dark text-white">
+        <div class="card-body p-0 bg-dark">
           <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
             <table class="table table-hover table-dark mb-0">
               <thead class="sticky-top" style="top: 0; z-index: 1;">
@@ -88,8 +88,8 @@ import { FormsModule } from '@angular/forms';
                         <i class="bi bi-robot"></i>
                       </div>
                       <div>
-                        <div class="fw-bold">{{formatAgentName(agent)}}</div>
-                        <div class="small text-muted">{{agent}}</div>
+                        <div class="fw-bold text-white">{{formatAgentName(agent)}}</div>
+                        <div class="small text-white-75">{{agent}}</div>
                       </div>
                     </div>
                   </td>
@@ -100,10 +100,10 @@ import { FormsModule } from '@angular/forms';
                     </span>
                   </td>
                   <td>
-                    <div class="small">{{agents[agent].lastActivity || 'No activity'}}</div>
+                    <div class="small text-white">{{agents[agent].lastActivity || 'No activity'}}</div>
                   </td>
                   <td>
-                    <div class="small">{{formatTime(agents[agent].lastActivityTime) || 'Never'}}</div>
+                    <div class="small text-white">{{formatTime(agents[agent].lastActivityTime) || 'Never'}}</div>
                   </td>
                   <td>
                     <div class="text-success fw-bold">{{agents[agent].successCount || 0}}</div>
@@ -119,7 +119,7 @@ import { FormsModule } from '@angular/forms';
                              [style.width.%]="agents[agent].successRate || 0">
                         </div>
                       </div>
-                      <div class="small" style="min-width: 40px;">
+                      <div class="small text-white" style="min-width: 40px;">
                         {{(agents[agent].successRate || 0).toFixed(1)}}%
                       </div>
                     </div>
@@ -134,7 +134,7 @@ import { FormsModule } from '@angular/forms';
                   </td>
                 </tr>
                 <tr *ngIf="filteredAgents.length === 0">
-                  <td colspan="8" class="text-center py-4 text-muted">
+                  <td colspan="8" class="text-center py-4 text-white-50">
                     No agents found matching "{{searchTerm}}"
                   </td>
                 </tr>
@@ -146,7 +146,7 @@ import { FormsModule } from '@angular/forms';
         <!-- Table Footer -->
         <div class="card-footer py-2">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="small text-muted">
+            <div class="small text-white-75">
               Showing {{filteredAgents.length}} of {{agentList.length}} agents • 
               Last updated: {{lastUpdateTime}}
             </div>
@@ -199,6 +199,27 @@ import { FormsModule } from '@angular/forms';
     }
     .table-danger {
       background-color: rgba(255, 61, 113, 0.1) !important;
+    }
+    /* Make metric numbers more visible */
+    .card-body .h4 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+    .text-success {
+      color: #00ff88 !important;
+    }
+    .text-primary {
+      color: #66b3ff !important;
+    }
+    .text-danger {
+      color: #ff6666 !important;
+    }
+    .text-warning {
+      color: #ffcc00 !important;
+    }
+    .text-info {
+      color: #00ccff !important;
     }
     .spin {
       animation: spin 1s linear infinite;

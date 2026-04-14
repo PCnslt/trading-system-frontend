@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
       </div>
       
       <div class="table-responsive">
-        <table class="table table-sm table-hover">
+        <table class="table table-sm table-hover table-dark">
           <thead>
             <tr>
               <th scope="col">Time</th>
@@ -34,11 +34,11 @@ import { FormsModule } from '@angular/forms';
                 [class.table-success]="activity.status === 'success'"
                 [class.table-danger]="activity.status === 'error'"
                 [class.table-warning]="activity.status === 'pending'">
-              <td class="text-nowrap">{{formatTime(activity.timestamp)}}</td>
+              <td class="text-nowrap text-white">{{formatTime(activity.timestamp)}}</td>
               <td>
                 <span class="badge bg-primary">{{activity.agentId}}</span>
               </td>
-              <td class="text-truncate" style="max-width: 200px;" title="{{activity.task}}">
+              <td class="text-truncate text-white" style="max-width: 200px;" title="{{activity.task}}">
                 {{activity.task}}
               </td>
               <td>
@@ -48,7 +48,7 @@ import { FormsModule } from '@angular/forms';
               </td>
             </tr>
             <tr *ngIf="filteredActivities.length === 0">
-              <td colspan="4" class="text-center text-muted py-3">
+              <td colspan="4" class="text-center text-white py-3">
                 No activities to display
               </td>
             </tr>

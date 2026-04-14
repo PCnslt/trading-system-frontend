@@ -26,9 +26,6 @@ interface Prediction {
   imports: [CommonModule, FormsModule],
   template: `
     <div class="card">
-      <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">🎯 Leader Prediction Dashboard</h5>
-      </div>
       <div class="card-body">
         <!-- Controls -->
         <div class="row mb-4">

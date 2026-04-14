@@ -7,9 +7,10 @@ import { environment } from '../../../environments/index'; // environment config
 import { AgentActivityFeedComponent } from '../agent-activity-feed/agent-activity-feed.component';
 import { AgentStatusTableComponent } from '../agent-status-dashboard/agent-status-table.component';
 import { PerformanceMetricsComponent } from '../performance-metrics/performance-metrics.component';
-import { AgentControlPanelComponent } from '../agent-control-panel/agent-control-panel.component';
 import { ChatPanelComponent } from '../chat-panel/chat-panel.component';
 import { LeaderPredictionComponent } from '../leader-prediction/leader-prediction.component';
+import { GainerPredictionsComponent } from '../gainer-predictions/gainer-predictions.component';
+import { PredictionMonitoringComponent } from '../prediction-monitoring/prediction-monitoring.component';
 import { MonitoringService } from '../../services/monitoring.service';
 
 interface TopRecommendation {
@@ -43,11 +44,12 @@ interface AgentActivity {
     FormsModule,
     RouterModule,
     AgentActivityFeedComponent,
-    AgentControlPanelComponent,
     AgentStatusTableComponent,
     PerformanceMetricsComponent,
     ChatPanelComponent,
-    LeaderPredictionComponent
+    LeaderPredictionComponent,
+    GainerPredictionsComponent,
+    PredictionMonitoringComponent
   ],
   template: `
     <div class="container-fluid p-3">
@@ -108,10 +110,7 @@ interface AgentActivity {
                 <button class="btn btn-sm btn-outline-light" disabled title="Coming soon">
                   <i class="bi bi-heart-pulse me-1"></i> Health
                 </button>
-                <div class="ms-auto d-flex align-items-center">
-                  <span class="small text-white-75 me-2">Navigation:</span>
-                  <span class="badge bg-success">Click buttons to navigate</span>
-                </div>
+                <!-- Navigation text removed as requested -->
               </div>
             </div>
           </div>
@@ -271,16 +270,6 @@ interface AgentActivity {
             </div>
           </div>
 
-          <!-- Agent Control Panel -->
-          <div class="card mb-4">
-            <div class="card-header bg-warning text-white">
-              <h5 class="mb-0">🎮 Agent Control Panel</h5>
-            </div>
-            <div class="card-body">
-              <app-agent-control-panel></app-agent-control-panel>
-            </div>
-          </div>
-
           <!-- Chat with Agents -->
           <div class="card mb-4">
             <div class="card-header bg-info text-white">
@@ -288,6 +277,26 @@ interface AgentActivity {
             </div>
             <div class="card-body">
               <app-chat-panel></app-chat-panel>
+            </div>
+          </div>
+
+          <!-- Prediction Monitoring -->
+          <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+              <h5 class="mb-0">🔍 Real-time Prediction Monitoring</h5>
+            </div>
+            <div class="card-body">
+              <app-prediction-monitoring [showHeader]="false"></app-prediction-monitoring>
+            </div>
+          </div>
+
+          <!-- Collaborative Gainer Predictions -->
+          <div class="card mb-4">
+            <div class="card-header bg-warning text-white">
+              <h5 class="mb-0">👥 10-Agent Collaborative Top Gainers Prediction</h5>
+            </div>
+            <div class="card-body">
+              <app-gainer-predictions></app-gainer-predictions>
             </div>
           </div>
 
@@ -474,35 +483,119 @@ export class DashboardHomeComponent implements OnInit {
 
   // Load existing recommendations from backend
   loadRecommendations() {
-    this.http.get<any[]>(`${environment.apiUrl}/trade-recommendations/latest?limit=10`)
-      .subscribe({
-        next: (recommendations) => {
-          if (recommendations && recommendations.length > 0) {
-            this.allRecommendations = recommendations;
-            // Set the first one as top recommendation
-            this.topRecommendation = recommendations[0];
-            this.addLog('success', `Loaded ${recommendations.length} recommendations`);
-          } else {
-            this.addLog('info', 'No existing recommendations found');
-          }
-        },
-        error: (error) => {
-          this.addLog('error', 'Failed to load recommendations', error);
+    // Try to load from collaborative predictions endpoint
+    this.http.post<any>(`${environment.apiUrl}/predictions/collaborative`, {
+      daysAhead: 2,
+      topN: 10,
+      forceRefresh: false  // Use cached predictions if available
+    }).subscribe({
+      next: (response) => {
+        if (response.status === 'success' && response.prediction && response.prediction.finalPredictions) {
+          const finalPredictions = response.prediction.finalPredictions;
+          
+          // Convert predictions to recommendation format
+          this.allRecommendations = finalPredictions.map((pred: any, index: number) => {
+            // Extract confidence percentage from string like "71.0%"
+            const confidenceStr = pred.confidence || '0%';
+            const confidence = parseFloat(confidenceStr.replace('%', '')) / 100;
+            
+            // Extract expected gain from string like "5.31%"
+            const gainStr = pred.expectedGain || '0%';
+            const expectedGain = parseFloat(gainStr.replace('%', ''));
+            
+            return {
+              symbol: pred.symbol || 'Unknown',
+              name: pred.symbol || 'Unknown Stock',
+              signal: pred.signal || 'HOLD',
+              confidence: confidence,
+              profitability_score: expectedGain / 100, // Convert percentage to decimal 0-1
+              type: this.getStockType(pred.symbol),
+              timestamp: pred.predictionDate || new Date().toISOString(),
+              rank: index + 1,
+              expectedGain: expectedGain,
+              reasoning: pred.reasoning || 'No reasoning provided'
+            };
+          });
+          
+          // Set the first one as top recommendation
+          this.topRecommendation = this.allRecommendations[0];
+          
+          this.addLog('success', `Loaded ${this.allRecommendations.length} recommendations from collaborative predictions`, {
+            topSymbol: this.topRecommendation?.symbol,
+            topSignal: this.topRecommendation?.signal,
+            topConfidence: this.topRecommendation?.confidence
+          });
+        } else {
+          this.addLog('info', 'No existing predictions found. Click "Refresh" to generate new recommendations.');
         }
-      });
+      },
+      error: (error) => {
+        this.addLog('error', 'Failed to load recommendations from collaborative predictions', error);
+        // Fallback: generate new recommendations
+        this.generateRecommendations();
+      }
+    });
   }
 
   generateRecommendations() {
     this.isGenerating = true;
     this.addLog('info', `Generating recommendations for category: ${this.selectedCategory}`);
     
-    // In PRODUCTION: This should call a real trading algorithm service
-    // For now, we'll show an error since we don't have real data generation
-    this.addLog('error', 'Real recommendation generation not implemented in production. Requires trading algorithm service.', {
-      note: 'In production, this would call:',
-      services: ['Alpha Vantage API', 'ML prediction models', 'Real-time market data', 'Trading algorithms']
+    // Call the collaborative predictions endpoint to get real predictions
+    this.http.post<any>(`${environment.apiUrl}/predictions/collaborative`, {
+      daysAhead: 2,
+      topN: 10,
+      forceRefresh: true
+    }).subscribe({
+      next: (response) => {
+        if (response.status === 'success' && response.prediction && response.prediction.finalPredictions) {
+          const finalPredictions = response.prediction.finalPredictions;
+          
+          // Convert predictions to recommendation format
+          this.allRecommendations = finalPredictions.map((pred: any, index: number) => {
+            // Extract confidence percentage from string like "71.0%"
+            const confidenceStr = pred.confidence || '0%';
+            const confidence = parseFloat(confidenceStr.replace('%', '')) / 100;
+            
+            // Extract expected gain from string like "5.31%"
+            const gainStr = pred.expectedGain || '0%';
+            const expectedGain = parseFloat(gainStr.replace('%', ''));
+            
+            return {
+              symbol: pred.symbol || 'Unknown',
+              name: pred.symbol || 'Unknown Stock',
+              signal: pred.signal || 'HOLD',
+              confidence: confidence,
+              profitability_score: expectedGain / 100, // Convert percentage to decimal 0-1
+              type: this.getStockType(pred.symbol),
+              timestamp: pred.predictionDate || new Date().toISOString(),
+              rank: index + 1,
+              expectedGain: expectedGain,
+              reasoning: pred.reasoning || 'No reasoning provided'
+            };
+          });
+          
+          // Set the first one as top recommendation
+          this.topRecommendation = this.allRecommendations[0];
+          
+          this.lastRecommendationTime = new Date();
+          this.isGenerating = false;
+          
+          this.addLog('success', `Generated ${this.allRecommendations.length} recommendations from collaborative predictions`, {
+            topSymbol: this.topRecommendation?.symbol,
+            topSignal: this.topRecommendation?.signal,
+            topConfidence: this.topRecommendation?.confidence
+          });
+        } else {
+          this.addLog('error', 'Failed to generate recommendations: Invalid response from collaborative predictions', response);
+          this.isGenerating = false;
+        }
+      },
+      error: (error) => {
+        this.addLog('error', 'Failed to generate recommendations', error);
+        this.isGenerating = false;
+      }
     });
-    this.isGenerating = false;
     
     // TEMPORARY: Comment out the mock data generation
     /*
@@ -553,6 +646,17 @@ export class DashboardHomeComponent implements OnInit {
   triggerAgentAnalysis(symbol: string, agentType: string) {
     this.addLog('info', `Triggering ${agentType} analysis for ${symbol}`);
     
+    // Send chat message that agent is starting analysis
+    this.sendAgentChatMessage(
+      agentType === 'technical' ? 'technical_analyst' : 
+      agentType === 'fundamental' ? 'fundamental_analyst' :
+      agentType === 'sentiment' ? 'sentiment_analyst' : 'macro_analyst',
+      `Starting ${agentType} analysis on ${symbol}...`,
+      'analysis_started',
+      symbol,
+      0.8
+    );
+    
     this.http.post<any>(`${environment.apiUrl}/trigger/${agentType}/${symbol}`, {})
       .subscribe({
         next: (response) => {
@@ -560,13 +664,55 @@ export class DashboardHomeComponent implements OnInit {
             signal: response.analysis?.signal,
             confidence: response.analysis?.confidence
           });
+          
+          // Send chat message with analysis results
+          const signal = response.analysis?.signal || 'HOLD';
+          const confidence = response.analysis?.confidence || 0.5;
+          this.sendAgentChatMessage(
+            agentType === 'technical' ? 'technical_analyst' : 
+            agentType === 'fundamental' ? 'fundamental_analyst' :
+            agentType === 'sentiment' ? 'sentiment_analyst' : 'macro_analyst',
+            `${agentType} analysis complete for ${symbol}: ${signal} signal with ${(confidence * 100).toFixed(0)}% confidence`,
+            'analysis_complete',
+            symbol,
+            confidence
+          );
+          
           this.totalAnalyses++;
           if (response.status === 'success') this.successfulAnalyses++;
         },
         error: (error) => {
           this.addLog('error', `Failed to trigger ${agentType} analysis for ${symbol}`, error);
+          
+          // Send error chat message
+          this.sendAgentChatMessage(
+            agentType === 'technical' ? 'technical_analyst' : 
+            agentType === 'fundamental' ? 'fundamental_analyst' :
+            agentType === 'sentiment' ? 'sentiment_analyst' : 'macro_analyst',
+            `Failed to complete ${agentType} analysis on ${symbol}: ${error.message || 'Unknown error'}`,
+            'error',
+            symbol,
+            0.3
+          );
         }
       });
+  }
+  
+  sendAgentChatMessage(sender: string, message: string, messageType: string, symbol: string, confidence: number) {
+    const chatMessage = {
+      sender: sender,
+      receiver: 'monitoring_dashboard',
+      message: message,
+      messageType: messageType,
+      timestamp: new Date().toISOString(),
+      confidence: confidence,
+      symbol: symbol
+    };
+    
+    this.http.post(`${environment.apiUrl}/chat`, chatMessage).subscribe({
+      next: () => console.log('Chat message sent:', chatMessage),
+      error: (err) => console.error('Failed to send chat message:', err)
+    });
   }
 
   startSystemMonitoring() {
@@ -655,6 +801,21 @@ export class DashboardHomeComponent implements OnInit {
     if (score >= 0.8) return 'bg-success';
     if (score >= 0.6) return 'bg-warning';
     return 'bg-danger';
+  }
+
+  getStockType(symbol: string): string {
+    // Simple classification based on symbol patterns
+    if (symbol.includes('BTC') || symbol.includes('ETH') || symbol.includes('SOL') || 
+        symbol.includes('ADA') || symbol.includes('DOT') || symbol.includes('XRP')) {
+      return 'Crypto';
+    }
+    if (symbol.length <= 4) {
+      return 'Stock';
+    }
+    if (symbol.includes('ETF') || symbol.includes('FUND')) {
+      return 'ETF';
+    }
+    return 'Stock';
   }
 
   getLogLevelClass(level: string): string {

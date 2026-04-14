@@ -222,6 +222,10 @@ export class MonitoringService {
     return this.http.get<Record<string, AgentStatus>>(`${this.baseUrl}/monitoring/agents/status`);
   }
 
+  getAgentReport(agentId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/predictions/monitoring/agent-reports/${agentId}`);
+  }
+
   getHealth(): Observable<any> {
     return this.http.get(`${this.baseUrl}/monitoring/health`);
   }

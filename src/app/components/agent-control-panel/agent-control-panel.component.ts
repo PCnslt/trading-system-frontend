@@ -87,21 +87,21 @@ interface TriggerResponse {
           <!-- Status & Logs -->
           <div class="row">
             <div class="col-md-12">
-              <div class="card">
-                <div class="card-header">
-                  <h6 class="mb-0">Trigger Logs</h6>
+              <div class="card bg-dark text-white">
+                <div class="card-header bg-secondary">
+                  <h6 class="mb-0 text-white">Trigger Logs</h6>
                 </div>
-                <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                  <div *ngIf="logs.length === 0" class="text-muted">No triggers yet.</div>
-                  <div *ngFor="let log of logs" class="log-entry mb-2">
+                <div class="card-body bg-dark" style="max-height: 300px; overflow-y: auto;">
+                  <div *ngIf="logs.length === 0" class="text-white-75">No triggers yet.</div>
+                  <div *ngFor="let log of logs" class="log-entry mb-2" [ngClass]="'log-entry ' + log.status">
                     <div class="d-flex justify-content-between">
-                      <span class="fw-bold">{{log.timestamp}}</span>
-                      <span class="badge" [ngClass]="log.status === 'success' ? 'bg-success' : 'bg-danger'">
+                      <span class="fw-bold text-white">{{log.timestamp}}</span>
+                      <span class="badge" [ngClass]="log.status === 'success' ? 'bg-success' : log.status === 'error' ? 'bg-danger' : 'bg-info'">
                         {{log.status}}
                       </span>
                     </div>
-                    <div class="small">{{log.message}}</div>
-                    <div *ngIf="log.agent" class="small text-muted">Agent: {{log.agent}}, Symbol: {{log.symbol}}</div>
+                    <div class="small text-white">{{log.message}}</div>
+                    <div *ngIf="log.agent" class="small text-white-75">Agent: {{log.agent}}, Symbol: {{log.symbol}}</div>
                   </div>
                 </div>
               </div>
@@ -117,14 +117,21 @@ interface TriggerResponse {
     }
     .log-entry {
       padding: 0.5rem;
-      border-left: 3px solid #dee2e6;
-      background-color: #f8f9fa;
+      border-left: 3px solid #495057;
+      background-color: #343a40;
+      border-radius: 4px;
     }
     .log-entry.success {
       border-left-color: #198754;
+      background-color: rgba(25, 135, 84, 0.1);
     }
     .log-entry.error {
       border-left-color: #dc3545;
+      background-color: rgba(220, 53, 69, 0.1);
+    }
+    .log-entry.info {
+      border-left-color: #0dcaf0;
+      background-color: rgba(13, 202, 240, 0.1);
     }
   `]
 })
