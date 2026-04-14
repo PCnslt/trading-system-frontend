@@ -11,6 +11,7 @@ import { ChatPanelComponent } from '../chat-panel/chat-panel.component';
 import { LeaderPredictionComponent } from '../leader-prediction/leader-prediction.component';
 import { GainerPredictionsComponent } from '../gainer-predictions/gainer-predictions.component';
 import { PredictionMonitoringComponent } from '../prediction-monitoring/prediction-monitoring.component';
+import { TopGainersPredictionComponent } from '../top-gainers-prediction/top-gainers-prediction.component';
 import { MonitoringService } from '../../services/monitoring.service';
 
 interface TopRecommendation {
@@ -49,7 +50,8 @@ interface AgentActivity {
     ChatPanelComponent,
     LeaderPredictionComponent,
     GainerPredictionsComponent,
-    PredictionMonitoringComponent
+    PredictionMonitoringComponent,
+    TopGainersPredictionComponent
   ],
   template: `
     <div class="container-fluid p-3">
@@ -161,6 +163,9 @@ interface AgentActivity {
       <div class="row mb-4">
         <!-- Left Column: Top Recommendations -->
         <div class="col-lg-8">
+          <!-- Top 10 Gainers with 2-Day Prediction -->
+          <app-top-gainers-prediction></app-top-gainers-prediction>
+          
           <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
               <h5 class="mb-0">🎯 Top Recommendations (Profitability Order)</h5>
